@@ -1,0 +1,10 @@
+# GetIncomingMessagesResponse
+
+
+## Fields
+
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `HttpMeta`                                                                                       | [HTTPMetadata](../../Models/Components/HTTPMetadata.md)                                          | :heavy_check_mark:                                                                               | N/A                                                                                              |
+| `IncomingMessages`                                                                               | List<[IncomingMessage](../../Models/Components/IncomingMessage.md)>                              | :heavy_minus_sign:                                                                               | The request was processed successfully. Please check received messages details in response body. |
+| `Headers`                                                                                        | Dictionary<String, List<*string*>>                                                               | :heavy_check_mark:                                                                               | N/A                                                                                              |
