@@ -14,7 +14,7 @@ generation:
   comments:
     omitDescriptionIfSummaryPresent: true
 csharp:
-  version: 0.0.12
+  version: 0.0.13
   additionalDependencies: []
   author: Gsmservice.pl
   clientServerStatusCodesAsErrors: true
