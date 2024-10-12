@@ -43,7 +43,7 @@ dotnet add reference src/Gsmservice/Gateway/Gsmservice.Gateway.csproj
 ```
 <!-- End SDK Installation [installation] -->
 ## Requeirements:
-- Minimal .NET Runtime version: 6.0
+- Minimal .NET Runtime version: 8.0
 
 <!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage

@@ -2,7 +2,7 @@ speakeasyVersion: 1.418.1
 sources:
     Client -OAS:
         sourceNamespace: client--oas
-        sourceRevisionDigest: sha256:ba6eda480fc3dec1a2d4d52d868314774dad6e611da014a824961e9eb53b7f8b
+        sourceRevisionDigest: sha256:ec729330bd993806ceea66e8c5d8368144968fde4c8a500df8f77b872d306099
         sourceBlobDigest: sha256:b877346419523bbb03423307c666bac7db61f37e999237b81338fdb8853d33c4
         tags:
             - latest
@@ -10,7 +10,7 @@ targets:
     client:
         source: Client -OAS
         sourceNamespace: client--oas
-        sourceRevisionDigest: sha256:ba6eda480fc3dec1a2d4d52d868314774dad6e611da014a824961e9eb53b7f8b
+        sourceRevisionDigest: sha256:ec729330bd993806ceea66e8c5d8368144968fde4c8a500df8f77b872d306099
         sourceBlobDigest: sha256:b877346419523bbb03423307c666bac7db61f37e999237b81338fdb8853d33c4
 workflow:
     workflowVersion: 1.0.0

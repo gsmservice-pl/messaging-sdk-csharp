@@ -14,12 +14,12 @@ generation:
   comments:
     omitDescriptionIfSummaryPresent: true
 csharp:
-  version: 0.0.11
+  version: 0.0.12
   additionalDependencies: []
   author: Gsmservice.pl
   clientServerStatusCodesAsErrors: true
   disableNamespacePascalCasingApr2024: true
-  dotnetVersion: net6.0
+  dotnetVersion: net8.0
   enableSourceLink: false
   flattenGlobalSecurity: true
   imports:
