@@ -5,8 +5,9 @@ management:
   docVersion: 0.9.2
   speakeasyVersion: 1.418.1
   generationVersion: 2.438.3
-  releaseVersion: 0.0.10
-  configChecksum: 90f9516760070e9d46fc7c67fcc270b1
+  releaseVersion: 0.0.11
+  configChecksum: 3de707b79fcd52fd6ab91cfbf57300f1
+  published: true
 features:
   csharp:
     additionalDependencies: 0.1.0
@@ -33,6 +34,7 @@ generatedFiles:
   - .gitattributes
   - CONTRIBUTING.md
   - Gsmservice.Gateway.sln
+  - NUGET.md
   - USAGE.md
   - docs/Models/Components/AccountResponse.md
   - docs/Models/Components/AccountType.md
@@ -202,7 +204,7 @@ examples:
   getSmsPrice:
     single:
       requestBody:
-        application/json: [{"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}, {"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}]
+        application/json: {"recipients": "+48999999999", "message": "This is SMS message content.", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}
       responses:
         "200":
           application/json: [{"error": null, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "unicode": true, "flash": false, "price": 0.16}, {"error": null, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "unicode": true, "flash": false, "price": 0.16}, {"error": null, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "unicode": true, "flash": false, "price": 0.16}]
@@ -218,7 +220,7 @@ examples:
           application/problem+json: {"type": "https://problems-registry.smartbear.com/invalid-body-property-format", "status": 400, "title": "Invalid Body property format", "detail": "The request body contains a malformed property", "code": "400-21", "instance": "/rest/messages/sms"}
     multi:
       requestBody:
-        application/json: {"recipients": ["+48999999999", "+48999888777"], "message": "This is SMS message content.", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}
+        application/json: [{"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}, {"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}]
       responses:
         "200":
           application/json: [{"error": null, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "unicode": true, "flash": false, "price": 0.16}, {"error": null, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "unicode": true, "flash": false, "price": 0.16}]
@@ -242,7 +244,7 @@ examples:
           application/problem+json: {"type": "https://problems-registry.smartbear.com/invalid-body-property-format", "status": 400, "title": "Invalid Body property format", "detail": "The request body contains a malformed property", "code": "400-21", "instance": "/rest/messages/sms"}
     multi_cid:
       requestBody:
-        application/json: [{"recipients": "+48999999999", "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}, {"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}]
+        application/json: {"recipients": [{"nr": "+48999999999", "cid": "custom-id-A44445T"}, {"nr": "+48999888777", "cid": "custom-id-F44445R"}], "message": "This is SMS message content", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}
       responses:
         "200":
           application/json: []
@@ -251,7 +253,7 @@ examples:
   sendSms:
     single:
       requestBody:
-        application/json: [{"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}]
+        application/json: {"recipients": "+48999999999", "message": "This is SMS message content.", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}
       responses:
         "200":
           application/json: [{"id": 323234, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "sent_date": "2024-06-01T16:22:05Z", "status_date": "2024-06-01T16:22:07Z", "status_code": "QUEUED", "status_description": "The message has been accepted", "unicode": true, "flash": false, "price": 0.16}, {"id": 323234, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "sent_date": "2024-06-01T16:22:05Z", "status_date": "2024-06-01T16:22:07Z", "status_code": "QUEUED", "status_description": "The message has been accepted", "unicode": true, "flash": false, "price": 0.16}]
@@ -267,7 +269,7 @@ examples:
           application/problem+json: {"type": "https://problems-registry.smartbear.com/invalid-body-property-format", "status": 400, "title": "Invalid Body property format", "detail": "The request body contains a malformed property", "code": "400-21", "instance": "/rest/messages/sms"}
     multi:
       requestBody:
-        application/json: {"recipients": ["+48999999999", "+48999888777"], "message": "This is SMS message content.", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}
+        application/json: [{"recipients": {"nr": "+48999999999", "cid": "my-id-1113"}, "message": "To jest treść wiadomości", "sender": "Bramka SMS", "type": 1, "unicode": true, "flash": false, "date": null}]
       responses:
         "200":
           application/json: [{"id": 323234, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "sent_date": "2024-06-01T16:22:05Z", "status_date": "2024-06-01T16:22:07Z", "status_code": "QUEUED", "status_description": "The message has been accepted", "unicode": true, "flash": false, "price": 0.16}, {"id": 323234, "cid": "custom-id-A44445T", "type": 1, "recipient": "+48999999999", "sender": "Bramka SMS", "parts": 1, "sent_date": "2024-06-01T16:22:05Z", "status_date": "2024-06-01T16:22:07Z", "status_code": "QUEUED", "status_description": "The message has been accepted", "unicode": true, "flash": false, "price": 0.16}]

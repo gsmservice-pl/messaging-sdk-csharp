@@ -1,49 +1,5 @@
-[![GitHub License](https://img.shields.io/github/license/gsmservice-pl/messaging-sdk-csharp)](https://github.com/gsmservice-pl/messaging-sdk-csharp/blob/main/LICENSE)
-[![Static Badge](https://img.shields.io/badge/built_by-Speakeasy-yellow)](https://www.speakeasy.com/?utm_source=gsmservice-gateway&utm_campaign=csharp)
+# Gsmservice.Gateway
 
-# GSMService.pl Messaging REST API SDK for C#
-
-This package includes Messaging SDK for C# to send SMS & MMS messages directly from your app via https://bramka.gsmservice.pl messaging platform.
-
-## Additional documentation:
-
-A documentation of all methods and types is available below in section [Available Resources and Operations
-](#available-resources-and-operations).
-
-Also you can refer to the [REST API documentation](https://api.gsmservice.pl/rest/) for additional details about the basics of this SDK.
-<!-- No Summary [summary] -->
-
-<!-- Start Table of Contents [toc] -->
-## Table of Contents
-
-* [SDK Installation](#sdk-installation)
-* [SDK Example Usage](#sdk-example-usage)
-* [Available Resources and Operations](#available-resources-and-operations)
-* [Retries](#retries)
-* [Error Handling](#error-handling)
-* [Server Selection](#server-selection)
-* [Authentication](#authentication)
-<!-- End Table of Contents [toc] -->
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
-### NuGet
-
-To add the [NuGet](https://www.nuget.org/) package to a .NET project:
-```bash
-dotnet add package Gsmservice.Gateway
-```
-
-### Locally
-
-To add a reference to a local instance of the SDK in a .NET project:
-```bash
-dotnet add reference src/Gsmservice/Gateway/Gsmservice.Gateway.csproj
-```
-<!-- End SDK Installation [installation] -->
-## Requeirements:
-- Minimal .NET Runtime version: 6.0
 
 <!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
@@ -83,48 +39,6 @@ var res = await sdk.Outgoing.Sms.SendAsync(req);
 // handle response
 ```
 <!-- End SDK Example Usage [usage] -->
-
-<!-- Start Available Resources and Operations [operations] -->
-## Available Resources and Operations
-
-<details open>
-<summary>Available methods</summary>
-
-### [Accounts](docs/sdks/accounts/README.md)
-
-* [Get](docs/sdks/accounts/README.md#get) - Get account details
-* [GetSubaccount](docs/sdks/accounts/README.md#getsubaccount) - Get subaccount details
-
-
-### [Common](docs/sdks/common/README.md)
-
-* [Ping](docs/sdks/common/README.md#ping) - Checks API availability and version
-
-### [Incoming](docs/sdks/incoming/README.md)
-
-* [List](docs/sdks/incoming/README.md#list) - List the received SMS messages
-* [GetByIds](docs/sdks/incoming/README.md#getbyids) - Get the incoming messages by IDs
-
-### [Outgoing](docs/sdks/outgoing/README.md)
-
-* [GetByIds](docs/sdks/outgoing/README.md#getbyids) - Get the messages details and status by IDs
-* [CancelScheduled](docs/sdks/outgoing/README.md#cancelscheduled) - Cancel a scheduled messages
-* [List](docs/sdks/outgoing/README.md#list) - Lists the history of sent messages
-
-#### [Outgoing.Sms](docs/sdks/sms/README.md)
-
-* [GetPrice](docs/sdks/sms/README.md#getprice) - Check the price of SMS Messages
-* [Send](docs/sdks/sms/README.md#send) - Send SMS Messages
-
-### [Senders](docs/sdks/senders/README.md)
-
-* [List](docs/sdks/senders/README.md#list) - List allowed senders names
-* [Add](docs/sdks/senders/README.md#add) - Add a new sender name
-* [Delete](docs/sdks/senders/README.md#delete) - Delete a sender name
-* [SetDefault](docs/sdks/senders/README.md#setdefault) - Set default sender name
-
-</details>
-<!-- End Available Resources and Operations [operations] -->
 
 <!-- Start Retries [retries] -->
 ## Retries
@@ -272,16 +186,3 @@ var res = await sdk.Accounts.GetAsync();
 <!-- End Authentication [security] -->
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
-
-# Development
-
-## Maturity
-
-This SDK is in continuous development and there may be breaking changes between a major version update. Therefore, we recommend pinning usage
-to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
-looking for the latest version.
-
-## Contributions
-
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation.
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.

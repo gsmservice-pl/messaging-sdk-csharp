@@ -3,7 +3,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Gsmservice.Gateway</PackageId>
-    <Version>0.0.10</Version>
+    <Version>0.0.11</Version>
     <TargetFramework>net6.0</TargetFramework>
     <Authors>Gsmservice.pl</Authors>
     <Copyright>Copyright (c) Gsmservice.pl 2024</Copyright>
@@ -92,10 +92,14 @@ More information and documentation you can find at our [GitHub](https://github.c
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\..\..\NUGET.md" Pack="true" PackagePath="README.md"/>
+    <None Include="..\..\..\LICENSE" Pack="true" PackagePath="\"/>
+    <None Include="..\..\..\icon.png" Pack="true" PackagePath="\"/>
     <None Include="..\..\..\docs\**\*" Pack="true" PackagePath="\docs"  CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 
