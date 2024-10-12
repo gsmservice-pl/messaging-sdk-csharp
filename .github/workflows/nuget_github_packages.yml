@@ -20,4 +20,4 @@ jobs:
     - name: Package
       run: dotnet pack --no-restore --no-build --configuration Release -p:PackageVersion=${{ github.ref_name }} --output .
     - name: Publish
-      run: dotnet nuget push PackageUtils.${{ github.ref_name }}.nupkg -s https://nuget.pkg.github.com/gsmservice-pl/index.json -k ${{secrets.GITHUB_TOKEN}}
+      run: dotnet nuget push Gsmservice.Gateway.${{ github.ref_name }}.nupkg -s https://nuget.pkg.github.com/gsmservice-pl/index.json -k ${{secrets.GITHUB_TOKEN}}
