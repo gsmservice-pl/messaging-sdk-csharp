@@ -27,7 +27,7 @@ jobs:
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
 
     - name: Prepare package for NuGet repo
-      run: dotnet nuget add source --username gsmservice --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text --name nuget "https://api.nuget.org/v3/index.json"
+      run: dotnet nuget add source --username gsmservice --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text --name nuget_repo "https://api.nuget.org/v3/index.json"
 
     - name: Push package to NuGet repo
-      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }}  --source "nuget"
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }}  --source "nuget_repo"
