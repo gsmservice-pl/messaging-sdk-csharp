@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
     - name: Build
@@ -20,8 +20,14 @@ jobs:
     - name: Package
       run: dotnet pack --no-restore --no-build --configuration Release  --output .
 
-    - name: Prepare package
+    - name: Prepare package for GitHub Packages
       run: dotnet nuget add source --username tommek83 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/gsmservice-pl/index.json"
 
     - name: Push package to GitHub packages
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"
+
+    - name: Prepare package for NuGet repo
+      run: dotnet nuget add source --username gsmservice --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text --name nuget "https://api.nuget.org/v3/index.json"
+
+    - name: Push package to NuGet repo
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }}  --source "nuget"
