@@ -1,8 +1,7 @@
 name: Build and publish nuGet package in Github Packages
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,5 +18,9 @@ jobs:
       run: dotnet build --configuration Release
     - name: Package
       run: dotnet pack --no-restore --no-build --configuration Release -p:PackageVersion=${{ github.ref_name }} --output .
-    - name: Publish
-      run: dotnet nuget push Gsmservice.Gateway.${{ github.ref_name }}.nupkg -s https://nuget.pkg.github.com/gsmservice-pl/index.json -k ${{secrets.GITHUB_TOKEN}}
+
+    - name: Prepare package
+      run: dotnet nuget add source --username tommek83 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/gsmservice-pl/index.json"
+
+    - name: Push package to GitHub packages
+      run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"

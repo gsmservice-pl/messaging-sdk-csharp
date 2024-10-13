@@ -1,8 +1,8 @@
-speakeasyVersion: 1.418.1
+speakeasyVersion: 1.418.2
 sources:
     Client -OAS:
         sourceNamespace: client--oas
-        sourceRevisionDigest: sha256:8b8a4f7e9e6f7da7e0fea06f8332016bb87c128ea9001f6509fb05c65aa08045
+        sourceRevisionDigest: sha256:e6e1da4a02bf346b664570bfea7d2fcc4f6e9a459fbad11eae7e4ab41acd3a05
         sourceBlobDigest: sha256:b877346419523bbb03423307c666bac7db61f37e999237b81338fdb8853d33c4
         tags:
             - latest
@@ -10,7 +10,7 @@ targets:
     client:
         source: Client -OAS
         sourceNamespace: client--oas
-        sourceRevisionDigest: sha256:8b8a4f7e9e6f7da7e0fea06f8332016bb87c128ea9001f6509fb05c65aa08045
+        sourceRevisionDigest: sha256:e6e1da4a02bf346b664570bfea7d2fcc4f6e9a459fbad11eae7e4ab41acd3a05
         sourceBlobDigest: sha256:b877346419523bbb03423307c666bac7db61f37e999237b81338fdb8853d33c4
 workflow:
     workflowVersion: 1.0.0
