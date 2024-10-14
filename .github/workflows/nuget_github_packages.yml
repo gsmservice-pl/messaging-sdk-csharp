@@ -1,7 +1,8 @@
 name: Build and publish nuGet package in Github Packages and NuGet Repo
 
 on:
-  workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
   build:

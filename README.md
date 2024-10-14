@@ -1,3 +1,5 @@
+
+[![NuGet Version](https://img.shields.io/nuget/v/Gsmservice.Gateway)](https://www.nuget.org/packages/Gsmservice.Gateway)
 [![GitHub License](https://img.shields.io/github/license/gsmservice-pl/messaging-sdk-csharp)](https://github.com/gsmservice-pl/messaging-sdk-csharp/blob/main/LICENSE)
 [![Static Badge](https://img.shields.io/badge/built_by-Speakeasy-yellow)](https://www.speakeasy.com/?utm_source=gsmservice-gateway&utm_campaign=csharp)
 
