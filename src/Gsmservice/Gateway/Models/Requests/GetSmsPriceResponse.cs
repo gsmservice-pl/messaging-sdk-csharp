@@ -21,7 +21,7 @@ namespace Gsmservice.Gateway.Models.Requests
         public HTTPMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
-        /// The request was processed successfully. Please check the price and the details of particular messages in response body
+        /// The request was processed successfully. Please check the price and the details of particular messages in each `Price` object
         /// </summary>
         public List<Price>? Prices { get; set; }
 

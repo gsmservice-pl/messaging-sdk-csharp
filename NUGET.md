@@ -16,9 +16,9 @@ using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSms(
-    new List<Models.Components.Sms>() {
-        new Models.Components.Sms() {
+SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
+    new List<SmsMessage>() {
+        new SmsMessage() {
             Recipients = Recipients.CreateArrayOfStr(
                 new List<string>() {
                     "+48999999999",

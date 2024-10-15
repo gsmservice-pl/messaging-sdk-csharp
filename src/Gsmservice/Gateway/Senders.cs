@@ -29,11 +29,10 @@ namespace Gsmservice.Gateway
         /// List allowed senders names
         /// 
         /// <remarks>
-        /// Get a list of allowed senders defined in your account. The request doesn&apos;t contain a body or any parameters. <br/>
-        ///         <br/>
-        /// As a successful result an array with `Sender` objects will be returned, each object per single sender. Senders are being registered by providers and operators. Registered senders get *Active* status and can be used then to send messages. *Pending* senders are also returned by API (with proper `status`) but until registration they cannot be used. This request have to be authenticated using **API Access Token**.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// Get a list of allowed senders defined in your account. The method doesn&apos;t take any parameters.<br/>
+        /// <br/>
+        /// As a successful result a `ListSendersResponse` object will be returned wich `Senders` property of type `List&lt;Sender&gt;` containing `Sender` objects, each object per single sender.
         /// </remarks>
         /// </summary>
         Task<ListSendersResponse> ListAsync(RetryConfig? retryConfig = null);
@@ -42,11 +41,10 @@ namespace Gsmservice.Gateway
         /// Add a new sender name
         /// 
         /// <remarks>
-        /// Define a new allowed sender on your account. The request body should contain a `Sender` object with two properties: `sender` (defines sender name) and `description`. The secont parameter is very important - sender names are being registered by providers and operators. Only fully registered sender names can be used to send messages. Providers need sometimes detailed description of case in which the sender will be used to eliminate frauds. After verifing it they make a decisions if such sender name can be registered. Please carefully fill this property with the extensive description of a sender name (what will be its use, what the name mean, etc). <br/>
-        ///         <br/>
-        /// As a successful result a single `Sender` object will be returned. Registered senders get *Active* status and can be used then to send messages. Pending Senders are also returned by API (with proper `status`) but until registration they cannot be used. Response will also include meta-data header: `X-Sandbox` (if a request was made in Sandbox or Production system). This request have to be authenticated using **API Access Token**.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// Define a new allowed sender on your account. You should pass as parameter a `SenderInput` object with two properties: `Sender` (defines sender name) and `Description`. Please carefully fill this property with the extensive description of a sender name (what will be its use, what the name mean, etc).<br/>
+        /// <br/>
+        /// As a successful result a `AddSenderResponse` object will be returned with a `Sender` property containing a `Sender` object with details and status of added sender name.
         /// </remarks>
         /// </summary>
         Task<AddSenderResponse> AddAsync(SenderInput request, RetryConfig? retryConfig = null);
@@ -55,12 +53,10 @@ namespace Gsmservice.Gateway
         /// Delete a sender name
         /// 
         /// <remarks>
-        /// Removes defined sender name from your account. This endpoint accepts a path `sender` parameter with empty request body. You should pass the full sender name to delete it. Sender name will be deleted immediately.<br/>
         /// <br/>
-        /// As a successful response only HTTP status code of *204* will be returned in header with empty response body. Response will also include meta-data header: `X-Sandbox` (if a request was made in Sandbox or Production system).<br/>
-        /// This request have to be authenticated using **API Access Token**.<br/>
+        /// Removes defined sender name from your account. This method accepts a `string` with a **sender name** you want to remove. Sender name will be deleted immediately.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful response there would be no Exception thrown.
         /// </remarks>
         /// </summary>
         Task<DeleteSenderResponse> DeleteAsync(string sender, RetryConfig? retryConfig = null);
@@ -69,14 +65,10 @@ namespace Gsmservice.Gateway
         /// Set default sender name
         /// 
         /// <remarks>
-        /// Set default sender name to one of the senders names already defined on your account. Default sender name can be used while sending messages when you not pass any other defined sender to `Sms` object while sending message. <br/>
         /// <br/>
-        /// This endpoint accepts a path `sender` parameter with empty request body. You should pass the full sender name to set it as default on your account.<br/>
+        /// Set default sender name to one of the senders names already defined on your account. This method accepts a `string` containing a **sender name** to be set as default on your account.<br/>
         /// <br/>
-        /// As a successful response only HTTP status code of *204* will be returned in header with empty response body. Response will also include meta-data header: `X-Sandbox` (if a request was made in Sandbox or Production system).<br/>
-        /// This request have to be authenticated using **API Access Token**.<br/>
-        /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful response no Exception will be thrown.
         /// </remarks>
         /// </summary>
         Task<SetDefaultSenderResponse> SetDefaultAsync(string sender, RetryConfig? retryConfig = null);
@@ -86,10 +78,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.0.15";
+        private const string _sdkVersion = "0.1.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.0.15 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;

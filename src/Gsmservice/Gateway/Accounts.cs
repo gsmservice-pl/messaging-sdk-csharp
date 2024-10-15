@@ -29,11 +29,10 @@ namespace Gsmservice.Gateway
         /// Get account details
         /// 
         /// <remarks>
+        /// <br/>
         /// Get current account balance and other details of your account. You can check also account limit and if account is main one. Main accounts have unlimited privileges and using <a href="https://panel.gsmservice.pl">User Panel</a> you can create as many subaccounts as you need.<br/>
         ///  <br/>
-        /// The request doesn&apos;t contain a body or any parameters. As a successful result an `AccountResponse` object will be returned with properties describing details of current account you are logged in to using API Access Token. This request have to be authenticated using **API Access Token**.<br/>
-        /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// This method doesn&apos;t take any parameters. As a successful result a details of current account you are logged in using an API Access Token will be returned.
         /// </remarks>
         /// </summary>
         Task<GetAccountDetailsResponse> GetAsync(RetryConfig? retryConfig = null);
@@ -42,13 +41,12 @@ namespace Gsmservice.Gateway
         /// Get subaccount details
         /// 
         /// <remarks>
+        /// <br/>
         /// Check account balance and other details such subcredit balance of a subaccount. Subaccounts are additional users who can access your account services and the details. You can restrict access level and setup privileges to subaccounts using <a href="https://panel.gsmservice.pl">user panel</a>.<br/>
-        ///     <br/>
-        /// This endpoint accepts a path `user_login` parameter with empty request body. You should pass the full subaccount login to access its data. <br/>
         /// <br/>
-        /// As a successful result an `AccountResponse` object will be returned with properties describing details of subaccount with provided login. This request have to be authenticated using **API Access Token**.<br/>
+        /// This method accepts a `string` with user login. You should pass there the full subaccount login to access its data. <br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful result the details of subaccount with provided login will be returned.
         /// </remarks>
         /// </summary>
         Task<GetSubaccountDetailsResponse> GetSubaccountAsync(string userLogin, RetryConfig? retryConfig = null);
@@ -58,10 +56,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.0.15";
+        private const string _sdkVersion = "0.1.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.0.15 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;

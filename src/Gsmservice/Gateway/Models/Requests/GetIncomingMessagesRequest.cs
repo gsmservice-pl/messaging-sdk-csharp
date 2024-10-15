@@ -16,7 +16,7 @@ namespace Gsmservice.Gateway.Models.Requests
     {
 
         /// <summary>
-        /// Message IDs assigned by the system (separated by comma). The system will accept a maximum of 50 identifiers in one call.
+        /// Array of Message IDs assigned by the system. The system will accept a maximum of 50 identifiers in one call.
         /// </summary>
         [SpeakeasyMetadata("pathParam:style=simple,explode=true,name=ids")]
         public List<long> Ids { get; set; } = default!;

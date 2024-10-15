@@ -21,7 +21,7 @@ namespace Gsmservice.Gateway.Models.Requests
         public HTTPMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
-        /// The request was processed successfully. Please check the status of messages cancellation in response body.
+        /// The request was processed successfully. Please check the status of messages cancellation in `Status` property of each `CancelledMessage` object.
         /// </summary>
         public List<CancelledMessage>? CancelledMessages { get; set; }
 

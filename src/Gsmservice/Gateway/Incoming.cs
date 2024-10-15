@@ -29,13 +29,10 @@ namespace Gsmservice.Gateway
         /// List the received SMS messages
         /// 
         /// <remarks>
-        /// Get the details of all of received messages from your account incoming messages box. This endpoint supports pagination so you have to pass as query parameters a `page` value (number of page with received messages which you want to access) and a `limit` value (max of received messages per page). Messages are fetched from the latest one. The system will accept maximum **50** as `limit` parameter value. If you need to get details of larger volume of messages, please access them with next pages.<br/>
-        ///     <br/>
-        /// As a successful result an array with `IncomingMessage` objects will be returned, each object per single received message. Response will also include meta-data headers: `X-Total-Results` (a total count of all received messages which are available in incoming box on your account), `X-Total-Pages` (a total number of all pages with results), `X-Current-Page` (A current page number) and `X-Limit` (messages count per single page). This request have to be authenticated using **API Access Token**. <br/>
         /// <br/>
-        /// A response contains also a special `Link` header which includes *URIs* to access next, previous, first and last page with received messages (which complies with <a href="https://www.rfc-editor.org/rfc/rfc5988">RFC 5988</a>).<br/>
+        /// Get the details of all received messages from your account incoming messages box. This method supports pagination so you have to pass `page` (number of page with received messages which you want to access) and a `limit` (max of received messages per page) parameters. Messages are fetched from the latest one. This method will accept maximum **50** as `limit` parameter value.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful result a `ListIncomingMessagesResponse` object will be returned with `IncomingMessages` property of type `List&lt;IncomingMessage&gt;` containing `IncomingMessage` objects, each object per single received message. `ListIncomingMessagesResponse` object will contain also a `Headers` property where you can find `X-Total-Results` (a total count of all received messages which are available in incoming box on your account), `X-Total-Pages` (a total number of all pages with results), `X-Current-Page` (A current page number) and `X-Limit` (messages count per single page) elements.
         /// </remarks>
         /// </summary>
         Task<ListIncomingMessagesResponse> ListAsync(long? page = null, long? limit = null, RetryConfig? retryConfig = null);
@@ -44,13 +41,10 @@ namespace Gsmservice.Gateway
         /// Get the incoming messages by IDs
         /// 
         /// <remarks>
-        /// Get the details of one or more received messages using their `ids`. You have to pass the unique incoming message *IDs* as path parameter, which were given while receiving a messages. If you want to get the details of multiple messages at once, please separate their IDs with a comma. The system will accept maximum 50 identifiers in one call. If you need to get details of larger volume of incoming messages, please split it to several separate requests.<br/>
-        ///     <br/>
-        /// As a successful result an array with `IncomingMessage` objects will be returned, each object per single found message. Response will also include meta-data headers: `X-Success-Count` (a count of incoming messages which were found and returned correctly) and `X-Error-Count` (count of incoming messages which were not found).<br/>
         /// <br/>
-        /// If you pass duplicated IDs, API will return data of this message only once. This request have to be authenticated using **API Access Token**. <br/>
+        /// Get the details of one or more received messages using their `ids`. This method accepts a `List&lt;long&gt;` containing unique incoming message *IDs*, which were given while receiving a messages. The method will accept maximum 50 identifiers in one call.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful result a `GetIncomingMessagesResponse` object will be returned with an `IncomingMessages` property of type `List&lt;IncomingMessage&gt;` containing `IncomingMessage` objects, each object per single received message. `GetIncomingMessagesResponse` object will contain also a `Headers` property where you can find `X-Success-Count` (a count of incoming messages which were found and returned correctly) and `X-Error-Count` (count of incoming messages which were not found) elements.
         /// </remarks>
         /// </summary>
         Task<GetIncomingMessagesResponse> GetByIdsAsync(List<long> ids, RetryConfig? retryConfig = null);
@@ -60,10 +54,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.0.15";
+        private const string _sdkVersion = "0.1.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.0.15 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;

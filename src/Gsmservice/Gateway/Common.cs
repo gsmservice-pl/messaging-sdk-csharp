@@ -21,9 +21,6 @@ namespace Gsmservice.Gateway
     using System.Threading.Tasks;
     using System;
 
-    /// <summary>
-    /// This section describes other usefull operations and tools
-    /// </summary>
     public interface ICommon
     {
 
@@ -31,27 +28,23 @@ namespace Gsmservice.Gateway
         /// Checks API availability and version
         /// 
         /// <remarks>
-        /// Check the API connection and the current API availability status. Also you will get the current API version number. The request doesn&apos;t contain a body or any parameters.<br/>
         /// <br/>
-        /// As a successful result a `PingResponse` object will be returned. This request doesn&apos;t need to be authenticated.<br/>
+        /// Check the API connection and the current API availability status. Also you will get the current API version number. The method doesn&apos;t accept any parameters.<br/>
         /// <br/>
-        /// In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with <a href="https://www.rfc-editor.org/rfc/rfc7807">RFC 9457</a>).
+        /// As a successful result a `PingResponse` object will be returned.
         /// </remarks>
         /// </summary>
         Task<Models.Requests.PingResponse> PingAsync(RetryConfig? retryConfig = null);
     }
 
-    /// <summary>
-    /// This section describes other usefull operations and tools
-    /// </summary>
     public class Common: ICommon
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.0.15";
+        private const string _sdkVersion = "0.1.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.0.15 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;

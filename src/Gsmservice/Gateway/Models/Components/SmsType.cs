@@ -12,16 +12,7 @@ namespace Gsmservice.Gateway.Models.Components
     using Gsmservice.Gateway.Utils;
     
     /// <summary>
-    /// SMS type according to the table<br/>
-    /// 
-    /// <remarks>
-    ///     <br/>
-    /// |type|Description|<br/>
-    /// |----|-----------|<br/>
-    /// |  1 |  SMS PRO  |<br/>
-    /// |  3 |  SMS ECO  |<br/>
-    /// |  4 |  SMS 2WAY |
-    /// </remarks>
+    /// SMS type (SmsType.SmsPro -&gt; SMS PRO, SmsType.SmsEco -&gt; SMS ECO, SmsType.SmsTwoWay -&gt; SMS 2WAY)
     /// </summary>
     public enum SmsType
     {

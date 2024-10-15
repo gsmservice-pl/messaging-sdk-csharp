@@ -21,83 +21,27 @@ namespace Gsmservice.Gateway
     using System;
 
     /// <summary>
-    /// Messaging Gateway GSMService.pl: <br/>
+    /// Messaging Gateway GSMService.pl<br/>
     /// 
     /// <remarks>
-    /// # Introduction<br/>
     /// <br/>
-    /// This document was created to explain the process of integration any application or system with the **GSMService.pl** SMS Gateway via the *REST API*. Currently, there are several ways to send messages with the GSMService.pl platform:<br/>
+    /// This package includes Messaging SDK for C# to send SMS %26 MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
     /// <br/>
-    /// * Directly from the <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> website <a href="https://panel.gsmservice.pl">User Panel</a><br/>
-    /// * Via this *REST API* and provided *SDKs*<br/>
-    /// * Via the legacy (deprecated) versions API: *Webservices (SOAP)* and *HTTP* <br/>
-    /// * Via the *MAIL2SMS* service<br/>
+    /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
-    /// This document describes the possibilities offered by **REST API**.<br/>
-    /// <br/>
-    /// &gt; **We kindly ask you to read this documentation carefully before starting the integration. This will make the whole process easier and will help you avoid many problems.**<br/>
-    /// <br/>
-    /// ## Documentation and Try Outs<br/>
-    /// <br/>
-    /// This documentation is available in two formats: <a href="https://api.gsmservice.pl/rest/">**REDOC**</a> and <a href="https://api.gsmservice.pl/rest/swagger">**SWAGGER**</a>. You can test any endpoint directly from documentation using **Try Out** feature of Swagger. Also you can <a href="https://api.gsmservice.pl/rest/swagger/messaging.yaml">download a **YAML** file</a> with doc in OpenApi 3.0 format.<br/>
-    /// <br/>
-    /// ## Account signup and setup<br/>
-    /// <br/>
-    /// Firstly, it is necessary to create your personal account at the GSMService.pl SMS Gateway platform if you haven&apos;t one and activate access to the API. To register a new account please <a href="https://panel.gsmservice.pl/rejestracja">signup the form</a>. After signing up and fully activation of an account you have to activate an access to the API.<br/>
-    /// <br/>
-    /// To do it please use <a href="https://panel.gsmservice.pl/api">this site</a> - fill the *New API Access* form with your preferred API login, set your API password, select which API standard you want to activate for this account (select **REST API** there). Optionally you can add IP adresses (or IP pool with CIDR notation) from which access to your API account will be possible. You can also set a callback address there to collect any messages status updates automatically. When a status of a messaga changes, the callback address will be called with passing parameters with new message status.<br/>
-    /// <br/>
-    /// After setup an API access you will get an unique **API Access Token** - please write it down as there won&apos;t be possible to display it again (you will have the possibility to regenerate it only). This token will be required to authenticate all the requests made with API on your account.<br/>
-    /// <br/>
-    /// ## Authentication of API requests<br/>
-    /// <br/>
-    /// All the endpoints of this REST API have to be authenticated using your API Access Token with one exception: * /rest/ping* endpoint which doesn&apos;t need an authentication. <br/>
-    /// <br/>
-    /// To make an authenticated request you should add to all requests an ***Authorization* header** which you have generated in previous step:<br/>
+    /// Please initialize it this way:<br/>
     /// <br/>
     /// ```<br/>
-    /// Authorization: Bearer &amp;lt;YOUR_API_ACCESS_TOKEN&amp;gt;<br/>
+    /// using Gsmservice.Gateway;<br/>
+    /// <br/>
+    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;);<br/>
     /// ```<br/>
     /// <br/>
-    /// ## URLs to connect to API<br/>
+    /// If you want to use a Sandbox test system please initialize it as follows:<br/>
     /// <br/>
-    /// Please use this SSL secured adresses to connect to REST API:<br/>
-    /// <br/>
-    /// * ```https://api.gsmservice.pl/rest``` - for production system<br/>
-    /// <br/>
-    /// * ```https://api.gsmservice.pl/rest-sandbox``` - for test system (Sandbox)<br/>
-    /// <br/>
-    /// &gt; [!NOTE]<br/>
-    /// &gt; **When calling our API, make sure you are using TLS version 1.2 or higher. Older versions are no longer supported.**<br/>
-    /// <br/>
-    /// # SDK Client Libraries<br/>
-    /// <br/>
-    /// For developers integrating SMS functionality into their app, we provide a convenient SDK Libraries.<br/>
-    /// <br/>
-    /// Our SDKs allow you to quickly start interacting with the Gateway using your favorite programming language. Currently we support the following languages:<br/>
-    /// <br/>
-    /// ## PHP 8<br/>
-    /// <br/>
-    /// To install PHP SDK issue the following command:<br/>
-    /// <br/>
-    /// ```shell<br/>
-    /// composer require gsmservice-pl/messaging-sdk-php<br/>
     /// ```<br/>
-    /// More information and documentation you can find at our <a href="https://github.com/gsmservice-pl/messaging-sdk-php">GitHub</a> <br/>
-    /// <br/>
-    /// ## Typescript<br/>
-    /// <br/>
-    /// To install Typescript SDK issue the following command:<br/>
-    /// <br/>
-    /// ### NPM<br/>
-    /// <br/>
-    /// ```shell<br/>
-    /// npm add @gsmservice-pl/messaging-sdk-typescript<br/>
-    /// ```<br/>
-    /// <br/>
-    /// More information and documentation you can find at our <a href="https://github.com/gsmservice-pl/messaging-sdk-typescript">GitHub</a> <br/>
-    /// <br/>
-    /// 
+    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;, null, SDKConfig.Server.Sandbox);<br/>
+    /// ```
     /// </remarks>
     /// </summary>
     public interface IClient
@@ -105,10 +49,6 @@ namespace Gsmservice.Gateway
         public IAccounts Accounts { get; }
         public IOutgoing Outgoing { get; }
         public IIncoming Incoming { get; }
-
-        /// <summary>
-        /// This section describes other usefull operations and tools
-        /// </summary>
         public ICommon Common { get; }
         public ISenders Senders { get; }
     }
@@ -170,83 +110,27 @@ namespace Gsmservice.Gateway
     }
 
     /// <summary>
-    /// Messaging Gateway GSMService.pl: <br/>
+    /// Messaging Gateway GSMService.pl<br/>
     /// 
     /// <remarks>
-    /// # Introduction<br/>
     /// <br/>
-    /// This document was created to explain the process of integration any application or system with the **GSMService.pl** SMS Gateway via the *REST API*. Currently, there are several ways to send messages with the GSMService.pl platform:<br/>
+    /// This package includes Messaging SDK for C# to send SMS %26 MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
     /// <br/>
-    /// * Directly from the <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> website <a href="https://panel.gsmservice.pl">User Panel</a><br/>
-    /// * Via this *REST API* and provided *SDKs*<br/>
-    /// * Via the legacy (deprecated) versions API: *Webservices (SOAP)* and *HTTP* <br/>
-    /// * Via the *MAIL2SMS* service<br/>
+    /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
-    /// This document describes the possibilities offered by **REST API**.<br/>
-    /// <br/>
-    /// &gt; **We kindly ask you to read this documentation carefully before starting the integration. This will make the whole process easier and will help you avoid many problems.**<br/>
-    /// <br/>
-    /// ## Documentation and Try Outs<br/>
-    /// <br/>
-    /// This documentation is available in two formats: <a href="https://api.gsmservice.pl/rest/">**REDOC**</a> and <a href="https://api.gsmservice.pl/rest/swagger">**SWAGGER**</a>. You can test any endpoint directly from documentation using **Try Out** feature of Swagger. Also you can <a href="https://api.gsmservice.pl/rest/swagger/messaging.yaml">download a **YAML** file</a> with doc in OpenApi 3.0 format.<br/>
-    /// <br/>
-    /// ## Account signup and setup<br/>
-    /// <br/>
-    /// Firstly, it is necessary to create your personal account at the GSMService.pl SMS Gateway platform if you haven&apos;t one and activate access to the API. To register a new account please <a href="https://panel.gsmservice.pl/rejestracja">signup the form</a>. After signing up and fully activation of an account you have to activate an access to the API.<br/>
-    /// <br/>
-    /// To do it please use <a href="https://panel.gsmservice.pl/api">this site</a> - fill the *New API Access* form with your preferred API login, set your API password, select which API standard you want to activate for this account (select **REST API** there). Optionally you can add IP adresses (or IP pool with CIDR notation) from which access to your API account will be possible. You can also set a callback address there to collect any messages status updates automatically. When a status of a messaga changes, the callback address will be called with passing parameters with new message status.<br/>
-    /// <br/>
-    /// After setup an API access you will get an unique **API Access Token** - please write it down as there won&apos;t be possible to display it again (you will have the possibility to regenerate it only). This token will be required to authenticate all the requests made with API on your account.<br/>
-    /// <br/>
-    /// ## Authentication of API requests<br/>
-    /// <br/>
-    /// All the endpoints of this REST API have to be authenticated using your API Access Token with one exception: * /rest/ping* endpoint which doesn&apos;t need an authentication. <br/>
-    /// <br/>
-    /// To make an authenticated request you should add to all requests an ***Authorization* header** which you have generated in previous step:<br/>
+    /// Please initialize it this way:<br/>
     /// <br/>
     /// ```<br/>
-    /// Authorization: Bearer &amp;lt;YOUR_API_ACCESS_TOKEN&amp;gt;<br/>
+    /// using Gsmservice.Gateway;<br/>
+    /// <br/>
+    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;);<br/>
     /// ```<br/>
     /// <br/>
-    /// ## URLs to connect to API<br/>
+    /// If you want to use a Sandbox test system please initialize it as follows:<br/>
     /// <br/>
-    /// Please use this SSL secured adresses to connect to REST API:<br/>
-    /// <br/>
-    /// * ```https://api.gsmservice.pl/rest``` - for production system<br/>
-    /// <br/>
-    /// * ```https://api.gsmservice.pl/rest-sandbox``` - for test system (Sandbox)<br/>
-    /// <br/>
-    /// &gt; [!NOTE]<br/>
-    /// &gt; **When calling our API, make sure you are using TLS version 1.2 or higher. Older versions are no longer supported.**<br/>
-    /// <br/>
-    /// # SDK Client Libraries<br/>
-    /// <br/>
-    /// For developers integrating SMS functionality into their app, we provide a convenient SDK Libraries.<br/>
-    /// <br/>
-    /// Our SDKs allow you to quickly start interacting with the Gateway using your favorite programming language. Currently we support the following languages:<br/>
-    /// <br/>
-    /// ## PHP 8<br/>
-    /// <br/>
-    /// To install PHP SDK issue the following command:<br/>
-    /// <br/>
-    /// ```shell<br/>
-    /// composer require gsmservice-pl/messaging-sdk-php<br/>
     /// ```<br/>
-    /// More information and documentation you can find at our <a href="https://github.com/gsmservice-pl/messaging-sdk-php">GitHub</a> <br/>
-    /// <br/>
-    /// ## Typescript<br/>
-    /// <br/>
-    /// To install Typescript SDK issue the following command:<br/>
-    /// <br/>
-    /// ### NPM<br/>
-    /// <br/>
-    /// ```shell<br/>
-    /// npm add @gsmservice-pl/messaging-sdk-typescript<br/>
-    /// ```<br/>
-    /// <br/>
-    /// More information and documentation you can find at our <a href="https://github.com/gsmservice-pl/messaging-sdk-typescript">GitHub</a> <br/>
-    /// <br/>
-    /// 
+    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;, null, SDKConfig.Server.Sandbox);<br/>
+    /// ```
     /// </remarks>
     /// </summary>
     public class Client: IClient
@@ -254,10 +138,10 @@ namespace Gsmservice.Gateway
         public SDKConfig SDKConfiguration { get; private set; }
 
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.0.15";
+        private const string _sdkVersion = "0.1.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.0.15 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private SDKConfig.Server? _server = null;
         private ISpeakeasyHttpClient _client;

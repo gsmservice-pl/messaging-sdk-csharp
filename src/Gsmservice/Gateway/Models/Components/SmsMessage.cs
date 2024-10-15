@@ -17,11 +17,11 @@ namespace Gsmservice.Gateway.Models.Components
     /// <summary>
     /// An object with a new SMS message properties
     /// </summary>
-    public class Sms
+    public class SmsMessage
     {
 
         /// <summary>
-        /// The recipient number or multiple recipients numbers of single message. To set one recipient, simply pass here a `string` with his phone number. To set multiple recipients, pass here a simple `array` of `string`. Optionally you can also set custom id (user identifier) for each message - pass `PhoneNumberWithCid` object (in case of single recipient) or `Array` of `PhoneNumberWithCid` (in case of multiple recipients).
+        /// The recipient number or multiple recipients numbers of single message. To set one recipient, please use `Recipients.CreateStr()` method simply passing to it a `string` with his phone number. To set multiple recipients, please use `Recipients.CreateArrayOfStr()` method passing to it `List&lt;string&gt;`. Optionally you can also set custom id (user identifier) for each message - use `Recipients.CreatePhoneNumberWithCid()` method passing `PhoneNumberWithCid` object (in case of single recipient) or `Recipients.CreateArrayOfPhoneNumberWithCid()` method passing List&lt;PhoneNumberWithCid&gt; (in case of multiple recipients).
         /// </summary>
         [JsonProperty("recipients")]
         public Recipients Recipients { get; set; } = default!;
@@ -39,16 +39,7 @@ namespace Gsmservice.Gateway.Models.Components
         public string? Sender { get; set; } = "Bramka SMS";
 
         /// <summary>
-        /// SMS type according to the table<br/>
-        /// 
-        /// <remarks>
-        ///     <br/>
-        /// |type|Description|<br/>
-        /// |----|-----------|<br/>
-        /// |  1 |  SMS PRO  |<br/>
-        /// |  3 |  SMS ECO  |<br/>
-        /// |  4 |  SMS 2WAY |
-        /// </remarks>
+        /// SMS type (SmsType.SmsPro -&gt; SMS PRO, SmsType.SmsEco -&gt; SMS ECO, SmsType.SmsTwoWay -&gt; SMS 2WAY)
         /// </summary>
         [JsonProperty("type")]
         public SmsType? Type { get; set; } = Gsmservice.Gateway.Models.Components.SmsType.SmsPro;

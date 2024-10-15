@@ -32,17 +32,7 @@ namespace Gsmservice.Gateway.Models.Components
         public string? Cid { get; set; } = null;
 
         /// <summary>
-        /// Message type according to the table:<br/>
-        /// 
-        /// <remarks>
-        ///     <br/>
-        /// |type|Description|<br/>
-        /// |----|-----------|<br/>
-        /// |  1 | SMS PRO   |<br/>
-        /// |  3 | SMS ECO   |<br/>
-        /// |  4 | SMS 2WAY  |<br/>
-        /// | 10 | MMS       |
-        /// </remarks>
+        /// Message type (SmsType.SmsPro -&gt; SMS PRO, SmsType.SmsEco -&gt; SMS ECO, SmsType.SmsTwoWay -&gt;SMS 2WAY, SmsType.Mms -&gt; MMS)
         /// </summary>
         [JsonProperty("type")]
         public MessageType? Type { get; set; }

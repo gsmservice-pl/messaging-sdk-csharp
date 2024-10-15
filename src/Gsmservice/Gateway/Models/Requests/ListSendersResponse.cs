@@ -21,7 +21,7 @@ namespace Gsmservice.Gateway.Models.Requests
         public HTTPMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
-        /// The request was processed successfully. Please find senders details in response body
+        /// The request was processed successfully. Please find senders details in returned objects
         /// </summary>
         public List<Sender>? Senders { get; set; }
     }

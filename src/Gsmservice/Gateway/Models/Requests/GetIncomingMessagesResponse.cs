@@ -21,7 +21,7 @@ namespace Gsmservice.Gateway.Models.Requests
         public HTTPMetadata HttpMeta { get; set; } = default!;
 
         /// <summary>
-        /// The request was processed successfully. Please check received messages details in response body.
+        /// The request was processed successfully. Please check received messages details in each `IncomingMessage` object
         /// </summary>
         public List<IncomingMessage>? IncomingMessages { get; set; }
 
