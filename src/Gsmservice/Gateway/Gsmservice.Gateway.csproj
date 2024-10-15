@@ -3,11 +3,12 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Gsmservice.Gateway</PackageId>
-    <Version>1.0.4</Version>
+    <Version>1.0.6</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>Gsmservice.pl</Authors>
     <Copyright>Copyright (c) Gsmservice.pl 2024</Copyright>
     <PackageTags>sdk messaging sms gateway messages bramka</PackageTags>
+    <PackageProjectUrl>https://bramka.gsmservice.pl</PackageProjectUrl>
     <Description>Messaging Gateway GSMService.pl
 
 This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via [https://bramka.gsmservice.pl](https://bramka.gsmservice.pl) messaging platform.
@@ -48,9 +49,16 @@ var sdk = new Client(bearer: "YOUR API ACCESS TOKEN", null, SDKConfig.Server.San
     <None Include="..\..\..\docs\**\*" Pack="true" PackagePath="\docs"  CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedAllSources>true</EmbedAllSources>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="nodatime" Version="3.1.9" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>

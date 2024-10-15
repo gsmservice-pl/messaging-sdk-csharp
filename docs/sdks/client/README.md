@@ -21,3 +21,6 @@ If you want to use a Sandbox test system please initialize it as follows:
 ```
 var sdk = new Client(bearer: "YOUR API ACCESS TOKEN", null, SDKConfig.Server.Sandbox);
 ```
+
+Bramka GSMService.pl
+<https://bramka.gsmservice.pl>
