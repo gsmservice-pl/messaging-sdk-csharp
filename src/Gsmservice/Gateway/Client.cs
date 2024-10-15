@@ -25,7 +25,7 @@ namespace Gsmservice.Gateway
     /// 
     /// <remarks>
     /// <br/>
-    /// This package includes Messaging SDK for C# to send SMS %26 MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
+    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
     /// <br/>
     /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
@@ -34,13 +34,13 @@ namespace Gsmservice.Gateway
     /// ```<br/>
     /// using Gsmservice.Gateway;<br/>
     /// <br/>
-    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;);<br/>
+    /// var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;);<br/>
     /// ```<br/>
     /// <br/>
     /// If you want to use a Sandbox test system please initialize it as follows:<br/>
     /// <br/>
     /// ```<br/>
-    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;, null, SDKConfig.Server.Sandbox);<br/>
+    /// var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;, null, SDKConfig.Server.Sandbox);<br/>
     /// ```
     /// </remarks>
     /// </summary>
@@ -114,7 +114,7 @@ namespace Gsmservice.Gateway
     /// 
     /// <remarks>
     /// <br/>
-    /// This package includes Messaging SDK for C# to send SMS %26 MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
+    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
     /// <br/>
     /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
@@ -123,13 +123,13 @@ namespace Gsmservice.Gateway
     /// ```<br/>
     /// using Gsmservice.Gateway;<br/>
     /// <br/>
-    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;);<br/>
+    /// var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;);<br/>
     /// ```<br/>
     /// <br/>
     /// If you want to use a Sandbox test system please initialize it as follows:<br/>
     /// <br/>
     /// ```<br/>
-    /// var sdk = new Client(bearer: &quot;%3CYOUR API ACCESS TOKEN%3E&quot;, null, SDKConfig.Server.Sandbox);<br/>
+    /// var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;, null, SDKConfig.Server.Sandbox);<br/>
     /// ```
     /// </remarks>
     /// </summary>
@@ -138,10 +138,10 @@ namespace Gsmservice.Gateway
         public SDKConfig SDKConfiguration { get; private set; }
 
         private const string _language = "csharp";
-        private const string _sdkVersion = "0.1.4";
+        private const string _sdkVersion = "1.0.4";
         private const string _sdkGenVersion = "2.438.3";
         private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 0.1.4 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _userAgent = "speakeasy-sdk/csharp 1.0.4 2.438.3 0.9.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private SDKConfig.Server? _server = null;
         private ISpeakeasyHttpClient _client;

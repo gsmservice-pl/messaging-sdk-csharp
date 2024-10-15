@@ -3,14 +3,14 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Gsmservice.Gateway</PackageId>
-    <Version>0.1.4</Version>
+    <Version>1.0.4</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>Gsmservice.pl</Authors>
     <Copyright>Copyright (c) Gsmservice.pl 2024</Copyright>
     <PackageTags>sdk messaging sms gateway messages bramka</PackageTags>
     <Description>Messaging Gateway GSMService.pl
 
-This package includes Messaging SDK for C# to send SMS %26 MMS messages directly from your app via [https://bramka.gsmservice.pl](https://bramka.gsmservice.pl) messaging platform.
+This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via [https://bramka.gsmservice.pl](https://bramka.gsmservice.pl) messaging platform.
 
 *Client* class is used to initialize SDK environment.
 
@@ -19,13 +19,13 @@ Please initialize it this way:
 ```
 using Gsmservice.Gateway;
 
-var sdk = new Client(bearer: "%3CYOUR API ACCESS TOKEN%3E");
+var sdk = new Client(bearer: "YOUR API ACCESS TOKEN");
 ```
 
 If you want to use a Sandbox test system please initialize it as follows:
 
 ```
-var sdk = new Client(bearer: "%3CYOUR API ACCESS TOKEN%3E", null, SDKConfig.Server.Sandbox);
+var sdk = new Client(bearer: "YOUR API ACCESS TOKEN", null, SDKConfig.Server.Sandbox);
 ```</Description>
   </PropertyGroup>
 
