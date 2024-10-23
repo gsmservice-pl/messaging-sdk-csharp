@@ -78,10 +78,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "1.0.6";
-        private const string _sdkGenVersion = "2.438.3";
-        private const string _openapiDocVersion = "0.9.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 1.0.6 2.438.3 0.9.2 Gsmservice.Gateway";
+        private const string _sdkVersion = "2.0.1";
+        private const string _sdkGenVersion = "2.438.15";
+        private const string _openapiDocVersion = "1.0.1";
+        private const string _userAgent = "speakeasy-sdk/csharp 2.0.1 2.438.15 1.0.1 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
