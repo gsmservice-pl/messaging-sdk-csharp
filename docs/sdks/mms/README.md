@@ -1,20 +1,20 @@
-# Sms
-(*Outgoing.Sms*)
+# Mms
+(*Outgoing.Mms*)
 
 ## Overview
 
 ### Available Operations
 
-* [GetPrice](#getprice) - Check the price of SMS Messages
-* [Send](#send) - Send SMS Messages
+* [GetPrice](#getprice) - Check the price of MMS Messages
+* [Send](#send) - Send MMS Messages
 
 ## GetPrice
 
 
-Check the price of single or multiple SMS messages at the same time before sending them. You can pass a single `SmsMessage` object using `GetSmsPriceRequestBody.CreateSmsMessage()` method (for single message) or `List<SmsMessage>` using `GetSmsPriceRequestBody.CreateArrayOfSmsMessage()` method (for multiple messages). Each `SmsMessage` object has several properties, describing message parameters such as recipient phone number, content of the message, type, etc.
-The method will accept maximum **100** messages in one call.
+Check the price of single or multiple MMS messages at the same time before sending them. You can pass a single `MmsMessage` object using `GetMmsPriceRequestBody.CreateMmsMessage()` method (for single message) or `List<MmsMessage>` using `GetMmsPriceRequestBody.CreateArrayOfMmsMessage()` method (for multiple messages). Each `MmsMessage` object has several properties, describing message parameters such as recipient phone number, content of the message, attachments, etc.
+The method will accept maximum **50** messages in one call.
 
-As a successful result a `GetSmsPriceResponse` object will be returned with `Prices` property of type `List<Price>` containing a `Price` objects, one object per each single message. You should check the `Error` property of each `Price` object to make sure which messages were priced successfully and which finished with an error. Successfully priced messages will have `null` value of `Error` property.
+As a successful result a `GetMmsPriceResponse` object will be returned  containing a `Price` objects, one object per each single message. You should check the `Error` property of each `Price` object to make sure which messages were priced successfully and which finished with an error. Successfully priced messages will have `null` value of `Error` property.
 
 `GetSmsPriceResponse` object will include also `Headers` property with `X-Success-Count` (a count of messages which were processed successfully) and `X-Error-Count` (count of messages which were rejected) elements.
 
@@ -28,26 +28,28 @@ using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-GetSmsPriceRequestBody req = GetSmsPriceRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreatePhoneNumberWithCid(
+GetMmsPriceRequestBody req = GetMmsPriceRequestBody.CreateArrayOfMmsMessage(
+    new List<MmsMessage>() {
+        new MmsMessage() {
+            Recipients = Recipients.CreatePhoneNumberWithCid(
                 new PhoneNumberWithCid() {
                     Nr = "+48999999999",
                     Cid = "my-id-1113",
                 }
             ),
+            Subject = "To jest temat wiadomości",
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
+            Attachments = Attachments.CreateArrayOfStr(
+                new List<string>() {
+                    "<file_body in base64 format>",
+                }
+            ),
             Date = null,
         },
     }
 );
 
-var res = await sdk.Outgoing.Sms.GetPriceAsync(req);
+var res = await sdk.Outgoing.Mms.GetPriceAsync(req);
 
 // handle response
 ```
@@ -56,11 +58,11 @@ var res = await sdk.Outgoing.Sms.GetPriceAsync(req);
 
 | Parameter                                                                 | Type                                                                      | Required                                                                  | Description                                                               |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `request`                                                                 | [GetSmsPriceRequestBody](../../Models/Requests/GetSmsPriceRequestBody.md) | :heavy_check_mark:                                                        | The request object to use for the request.                                |
+| `request`                                                                 | [GetMmsPriceRequestBody](../../Models/Requests/GetMmsPriceRequestBody.md) | :heavy_check_mark:                                                        | The request object to use for the request.                                |
 
 ### Response
 
-**[GetSmsPriceResponse](../../Models/Requests/GetSmsPriceResponse.md)**
+**[GetMmsPriceResponse](../../Models/Requests/GetMmsPriceResponse.md)**
 
 ### Errors
 
@@ -71,9 +73,9 @@ var res = await sdk.Outgoing.Sms.GetPriceAsync(req);
 ## Send
 
 
-Send single or multiple SMS messages at the same time. You can pass a single `SmsMessage` object using `SendSmsRequestBody.CreateSmsMessage()` method (for single message) or `List<SmsMessage>` using `SendSmsRequestBody.CreateArrayOfSmsMessage()` method (for multiple messages). Each `SmsMessage` object has several properties, describing message parameters such recipient phone number, content of the message, type or scheduled sending date, etc. This method will accept maximum 100 messages in one call.
+Send single or multiple MMS messages at the same time. You can pass a single `MmsMessage` object using `SendMmsRequestBody.CreateMmsMessage()` method (for single message) or `List<MmsMessage>` using `SendMmsRequestBody.CreateArrayOfMmsMessage()` method (for multiple messages). Each `SmsMessage` object has several properties, describing message parameters such recipient phone number, content of the message, attachments or scheduled sending date, etc. This method will accept maximum 50 messages in one call.
 
-As a successful result a `SendSmsResponse` object will be returned with `Messages` property of type List<Message> containing `Message` objects, one object per each single message. You should check the `StatusCode` property of each `Message` object to make sure which messages were accepted by gateway (queued) and which were rejected. In case of rejection, `StatusDescription` property will include a reason.
+As a successful result a `SendMmsResponse` object will be returned with `Messages` property of type List<Message> containing `Message` objects, one object per each single message. You should check the `StatusCode` property of each `Message` object to make sure which messages were accepted by gateway (queued) and which were rejected. In case of rejection, `StatusDescription` property will include a reason.
 
 `SendSmsResponse` will also include `Headers` property with `X-Success-Count` (a count of messages which were processed successfully), `X-Error-Count` (count of messages which were rejected) and `X-Sandbox` (if a request was made in Sandbox or Production system) elements.
 
@@ -87,25 +89,27 @@ using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreateArrayOfStr(
+SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
+    new List<MmsMessage>() {
+        new MmsMessage() {
+            Recipients = Recipients.CreateArrayOfStr(
                 new List<string>() {
                     "+48999999999",
                 }
             ),
+            Subject = "To jest temat wiadomości",
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
+            Attachments = Attachments.CreateArrayOfStr(
+                new List<string>() {
+                    "<file_body in base64 format>",
+                }
+            ),
             Date = null,
         },
     }
 );
 
-var res = await sdk.Outgoing.Sms.SendAsync(req);
+var res = await sdk.Outgoing.Mms.SendAsync(req);
 
 // handle response
 ```
@@ -114,11 +118,11 @@ var res = await sdk.Outgoing.Sms.SendAsync(req);
 
 | Parameter                                                         | Type                                                              | Required                                                          | Description                                                       |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `request`                                                         | [SendSmsRequestBody](../../Models/Requests/SendSmsRequestBody.md) | :heavy_check_mark:                                                | The request object to use for the request.                        |
+| `request`                                                         | [SendMmsRequestBody](../../Models/Requests/SendMmsRequestBody.md) | :heavy_check_mark:                                                | The request object to use for the request.                        |
 
 ### Response
 
-**[SendSmsResponse](../../Models/Requests/SendSmsResponse.md)**
+**[SendMmsResponse](../../Models/Requests/SendMmsResponse.md)**
 
 ### Errors
 

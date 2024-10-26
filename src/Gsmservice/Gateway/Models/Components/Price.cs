@@ -37,8 +37,11 @@ namespace Gsmservice.Gateway.Models.Components
         [JsonProperty("type")]
         public MessageType? Type { get; set; }
 
+        /// <summary>
+        /// A telephone number in international format (with a plus sign and the country code at the beginning, e.g. +48 for Poland)
+        /// </summary>
         [JsonProperty("recipient")]
-        public string? Recipient { get; set; } = null;
+        public string? Recipient { get; set; }
 
         /// <summary>
         /// Message sender name

@@ -24,6 +24,7 @@ namespace Gsmservice.Gateway
 
     public interface IOutgoing
     {
+        public IMms Mms { get; }
         public ISms Sms { get; }
 
         /// <summary>
@@ -69,13 +70,14 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "2.0.4";
+        private const string _sdkVersion = "2.1.6";
         private const string _sdkGenVersion = "2.438.15";
-        private const string _openapiDocVersion = "1.0.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 2.0.4 2.438.15 1.0.2 Gsmservice.Gateway";
+        private const string _openapiDocVersion = "1.1.2";
+        private const string _userAgent = "speakeasy-sdk/csharp 2.1.6 2.438.15 1.1.2 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
+        public IMms Mms { get; private set; }
         public ISms Sms { get; private set; }
 
         public Outgoing(ISpeakeasyHttpClient client, Func<Gsmservice.Gateway.Models.Components.Security>? securitySource, string serverUrl, SDKConfig config)
@@ -84,6 +86,7 @@ namespace Gsmservice.Gateway
             _securitySource = securitySource;
             _serverUrl = serverUrl;
             SDKConfiguration = config;
+            Mms = new Mms(_client, _securitySource, _serverUrl, SDKConfiguration);
             Sms = new Sms(_client, _securitySource, _serverUrl, SDKConfiguration);
         }
 

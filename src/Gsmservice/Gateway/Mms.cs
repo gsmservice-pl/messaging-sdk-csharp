@@ -22,35 +22,40 @@ namespace Gsmservice.Gateway
     using System.Threading.Tasks;
     using System;
 
-    public interface IIncoming
+    public interface IMms
     {
 
         /// <summary>
-        /// List the received SMS messages
+        /// Check the price of MMS Messages
         /// 
         /// <remarks>
         /// <br/>
-        /// Get the details of all received messages from your account incoming messages box. This method supports pagination so you have to pass `page` (number of page with received messages which you want to access) and a `limit` (max of received messages per page) parameters. Messages are fetched from the latest one. This method will accept maximum **50** as `limit` parameter value.<br/>
+        /// Check the price of single or multiple MMS messages at the same time before sending them. You can pass a single `MmsMessage` object using `GetMmsPriceRequestBody.CreateMmsMessage()` method (for single message) or `List&lt;MmsMessage&gt;` using `GetMmsPriceRequestBody.CreateArrayOfMmsMessage()` method (for multiple messages). Each `MmsMessage` object has several properties, describing message parameters such as recipient phone number, content of the message, attachments, etc.<br/>
+        /// The method will accept maximum **50** messages in one call.<br/>
         /// <br/>
-        /// As a successful result a `ListIncomingMessagesResponse` object will be returned with `IncomingMessages` property of type `List&lt;IncomingMessage&gt;` containing `IncomingMessage` objects, each object per single received message. `ListIncomingMessagesResponse` object will contain also a `Headers` property where you can find `X-Total-Results` (a total count of all received messages which are available in incoming box on your account), `X-Total-Pages` (a total number of all pages with results), `X-Current-Page` (A current page number) and `X-Limit` (messages count per single page) elements.
+        /// As a successful result a `GetMmsPriceResponse` object will be returned  containing a `Price` objects, one object per each single message. You should check the `Error` property of each `Price` object to make sure which messages were priced successfully and which finished with an error. Successfully priced messages will have `null` value of `Error` property.<br/>
+        /// <br/>
+        /// `GetSmsPriceResponse` object will include also `Headers` property with `X-Success-Count` (a count of messages which were processed successfully) and `X-Error-Count` (count of messages which were rejected) elements.
         /// </remarks>
         /// </summary>
-        Task<ListIncomingMessagesResponse> ListAsync(long? page = null, long? limit = null, RetryConfig? retryConfig = null);
+        Task<GetMmsPriceResponse> GetPriceAsync(GetMmsPriceRequestBody request, RetryConfig? retryConfig = null);
 
         /// <summary>
-        /// Get the incoming messages by IDs
+        /// Send MMS Messages
         /// 
         /// <remarks>
         /// <br/>
-        /// Get the details of one or more received messages using their `ids`. This method accepts a `List&lt;long&gt;` containing unique incoming message *IDs*, which were given while receiving a messages. The method will accept maximum 50 identifiers in one call.<br/>
+        /// Send single or multiple MMS messages at the same time. You can pass a single `MmsMessage` object using `SendMmsRequestBody.CreateMmsMessage()` method (for single message) or `List&lt;MmsMessage&gt;` using `SendMmsRequestBody.CreateArrayOfMmsMessage()` method (for multiple messages). Each `SmsMessage` object has several properties, describing message parameters such recipient phone number, content of the message, attachments or scheduled sending date, etc. This method will accept maximum 50 messages in one call.<br/>
         /// <br/>
-        /// As a successful result a `GetIncomingMessagesResponse` object will be returned with an `IncomingMessages` property of type `List&lt;IncomingMessage&gt;` containing `IncomingMessage` objects, each object per single received message. `GetIncomingMessagesResponse` object will contain also a `Headers` property where you can find `X-Success-Count` (a count of incoming messages which were found and returned correctly) and `X-Error-Count` (count of incoming messages which were not found) elements.
+        /// As a successful result a `SendMmsResponse` object will be returned with `Messages` property of type List&lt;Message&gt; containing `Message` objects, one object per each single message. You should check the `StatusCode` property of each `Message` object to make sure which messages were accepted by gateway (queued) and which were rejected. In case of rejection, `StatusDescription` property will include a reason.<br/>
+        /// <br/>
+        /// `SendSmsResponse` will also include `Headers` property with `X-Success-Count` (a count of messages which were processed successfully), `X-Error-Count` (count of messages which were rejected) and `X-Sandbox` (if a request was made in Sandbox or Production system) elements.
         /// </remarks>
         /// </summary>
-        Task<GetIncomingMessagesResponse> GetByIdsAsync(List<long> ids, RetryConfig? retryConfig = null);
+        Task<SendMmsResponse> SendAsync(SendMmsRequestBody request, RetryConfig? retryConfig = null);
     }
 
-    public class Incoming: IIncoming
+    public class Mms: IMms
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
@@ -62,7 +67,7 @@ namespace Gsmservice.Gateway
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
 
-        public Incoming(ISpeakeasyHttpClient client, Func<Gsmservice.Gateway.Models.Components.Security>? securitySource, string serverUrl, SDKConfig config)
+        public Mms(ISpeakeasyHttpClient client, Func<Gsmservice.Gateway.Models.Components.Security>? securitySource, string serverUrl, SDKConfig config)
         {
             _client = client;
             _securitySource = securitySource;
@@ -70,25 +75,27 @@ namespace Gsmservice.Gateway
             SDKConfiguration = config;
         }
 
-        public async Task<ListIncomingMessagesResponse> ListAsync(long? page = null, long? limit = null, RetryConfig? retryConfig = null)
+        public async Task<GetMmsPriceResponse> GetPriceAsync(GetMmsPriceRequestBody request, RetryConfig? retryConfig = null)
         {
-            var request = new ListIncomingMessagesRequest()
-            {
-                Page = page,
-                Limit = limit,
-            };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/incoming", request);
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, urlString);
+            var urlString = baseUrl + "/messages/mms/price";
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, urlString);
             httpRequest.Headers.Add("user-agent", _userAgent);
+
+            var serializedBody = RequestBodySerializer.Serialize(request, "Request", "json", false, false);
+            if (serializedBody != null)
+            {
+                httpRequest.Content = serializedBody;
+            }
 
             if (_securitySource != null)
             {
                 httpRequest = new SecurityMetadata(_securitySource).Apply(httpRequest);
             }
 
-            var hookCtx = new HookContext("listIncomingMessages", null, _securitySource);
+            var hookCtx = new HookContext("getMmsPrice", null, _securitySource);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
             if (retryConfig == null)
@@ -131,7 +138,7 @@ namespace Gsmservice.Gateway
                 httpResponse = await retries.Run();
                 int _statusCode = (int)httpResponse.StatusCode;
 
-                if (_statusCode == 400 || _statusCode == 401 || _statusCode == 403 || _statusCode == 404 || _statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
+                if (_statusCode == 400 || _statusCode == 401 || _statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
                 {
                     var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
                     if (_httpResponse != null)
@@ -161,8 +168,8 @@ namespace Gsmservice.Gateway
             {
                 if(Utilities.IsContentTypeMatch("application/json", contentType))
                 {
-                    var obj = ResponseBodyDeserializer.Deserialize<List<IncomingMessage>>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Include);
-                    var response = new ListIncomingMessagesResponse()
+                    var obj = ResponseBodyDeserializer.Deserialize<List<Price>>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
+                    var response = new GetMmsPriceResponse()
                     {
                         HttpMeta = new Models.Components.HTTPMetadata()
                         {
@@ -170,17 +177,17 @@ namespace Gsmservice.Gateway
                             Request = httpRequest
                         }
                     };
-                    response.IncomingMessages = obj;
+                    response.Prices = obj;
                     return response;
                 }
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {
-                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Include);
+                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
                     throw obj!;
                 }
 
@@ -190,24 +197,27 @@ namespace Gsmservice.Gateway
             throw new Models.Errors.SDKException("Unknown status code received", httpRequest, httpResponse);
         }
 
-        public async Task<GetIncomingMessagesResponse> GetByIdsAsync(List<long> ids, RetryConfig? retryConfig = null)
+        public async Task<SendMmsResponse> SendAsync(SendMmsRequestBody request, RetryConfig? retryConfig = null)
         {
-            var request = new GetIncomingMessagesRequest()
-            {
-                Ids = ids,
-            };
             string baseUrl = this.SDKConfiguration.GetTemplatedServerUrl();
-            var urlString = URLBuilder.Build(baseUrl, "/incoming/{ids}", request);
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Get, urlString);
+            var urlString = baseUrl + "/messages/mms";
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, urlString);
             httpRequest.Headers.Add("user-agent", _userAgent);
+
+            var serializedBody = RequestBodySerializer.Serialize(request, "Request", "json", false, false);
+            if (serializedBody != null)
+            {
+                httpRequest.Content = serializedBody;
+            }
 
             if (_securitySource != null)
             {
                 httpRequest = new SecurityMetadata(_securitySource).Apply(httpRequest);
             }
 
-            var hookCtx = new HookContext("getIncomingMessages", null, _securitySource);
+            var hookCtx = new HookContext("sendMms", null, _securitySource);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
             if (retryConfig == null)
@@ -250,7 +260,7 @@ namespace Gsmservice.Gateway
                 httpResponse = await retries.Run();
                 int _statusCode = (int)httpResponse.StatusCode;
 
-                if (_statusCode == 400 || _statusCode == 401 || _statusCode == 404 || _statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
+                if (_statusCode == 400 || _statusCode == 401 || _statusCode == 403 || _statusCode >= 400 && _statusCode < 500 || _statusCode >= 500 && _statusCode < 600)
                 {
                     var _httpResponse = await this.SDKConfiguration.Hooks.AfterErrorAsync(new AfterErrorContext(hookCtx), httpResponse, null);
                     if (_httpResponse != null)
@@ -280,8 +290,8 @@ namespace Gsmservice.Gateway
             {
                 if(Utilities.IsContentTypeMatch("application/json", contentType))
                 {
-                    var obj = ResponseBodyDeserializer.Deserialize<List<IncomingMessage>>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
-                    var response = new GetIncomingMessagesResponse()
+                    var obj = ResponseBodyDeserializer.Deserialize<List<Message>>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
+                    var response = new SendMmsResponse()
                     {
                         HttpMeta = new Models.Components.HTTPMetadata()
                         {
@@ -289,13 +299,13 @@ namespace Gsmservice.Gateway
                             Request = httpRequest
                         }
                     };
-                    response.IncomingMessages = obj;
+                    response.Messages = obj;
                     return response;
                 }
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {
