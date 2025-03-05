@@ -18,7 +18,6 @@ As a successful result a `PingResponse` object will be returned.
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Components;
 
 var sdk = new Client();
 
@@ -35,4 +34,5 @@ var res = await sdk.Common.PingAsync();
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 4XX, 503, 5XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 4XX                                       | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 503, 5XX                                       | application/problem+json                       |

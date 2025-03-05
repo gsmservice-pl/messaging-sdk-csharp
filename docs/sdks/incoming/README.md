@@ -19,7 +19,6 @@ As a successful result a `ListIncomingMessagesResponse` object will be returned 
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -47,7 +46,8 @@ var res = await sdk.Incoming.ListAsync(
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 404, 4XX, 5XX                   | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 404, 4XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## GetByIds
 
@@ -60,9 +60,8 @@ As a successful result a `GetIncomingMessagesResponse` object will be returned w
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 using Gsmservice.Gateway.Models.Components;
+using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
@@ -87,4 +86,5 @@ var res = await sdk.Incoming.GetByIdsAsync(ids: new List<long>() {
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 404, 4XX, 5XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 404, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |

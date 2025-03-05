@@ -5,8 +5,8 @@ This example demonstrates simple sending SMS message to a single recipient:
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -20,11 +20,6 @@ SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
                 }
             ),
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
-            Date = null,
         },
     }
 );
@@ -40,8 +35,8 @@ This example demonstrates simple sending MMS message to a single recipient:
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -61,7 +56,6 @@ SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
                     "<file_body in base64 format>",
                 }
             ),
-            Date = null,
         },
     }
 );

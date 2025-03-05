@@ -22,8 +22,8 @@ As a successful result a `GetSmsPriceResponse` object will be returned with `Pri
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -38,11 +38,6 @@ GetSmsPriceRequestBody req = GetSmsPriceRequestBody.CreateArrayOfSmsMessage(
                 }
             ),
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
-            Date = null,
         },
     }
 );
@@ -66,7 +61,8 @@ var res = await sdk.Outgoing.Sms.GetPriceAsync(req);
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 4XX, 5XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 4XX                                  | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## Send
 
@@ -81,8 +77,8 @@ As a successful result a `SendSmsResponse` object will be returned with `Message
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -96,11 +92,6 @@ SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
                 }
             ),
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
-            Date = null,
         },
     }
 );
@@ -124,4 +115,5 @@ var res = await sdk.Outgoing.Sms.SendAsync(req);
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX, 5XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |

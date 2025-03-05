@@ -38,7 +38,8 @@ var res = await sdk.Senders.ListAsync();
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX, 5XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## Add
 
@@ -79,7 +80,8 @@ var res = await sdk.Senders.AddAsync(req);
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX, 5XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## Delete
 
@@ -92,7 +94,6 @@ As a successful response there would be no Exception thrown.
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -116,7 +117,8 @@ var res = await sdk.Senders.DeleteAsync(sender: "Podpis");
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 404, 4XX, 5XX                   | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 404, 4XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## SetDefault
 
@@ -129,7 +131,6 @@ As a successful response no Exception will be thrown.
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -153,5 +154,6 @@ var res = await sdk.Senders.SetDefaultAsync(sender: "Podpis");
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX, 5XX                        | application/problem+json                       |
 | Gsmservice.Gateway.Models.Errors.ErrorResponse | 404                                            | application/json                               |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |

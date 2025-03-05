@@ -13,14 +13,14 @@ namespace Gsmservice.Gateway
     using Gsmservice.Gateway.Models.Components;
     using Gsmservice.Gateway.Models.Errors;
     using Gsmservice.Gateway.Models.Requests;
-    using Gsmservice.Gateway.Utils.Retries;
     using Gsmservice.Gateway.Utils;
+    using Gsmservice.Gateway.Utils.Retries;
     using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using System.Net.Http.Headers;
-    using System.Net.Http;
-    using System.Threading.Tasks;
     using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
 
     public interface IIncoming
     {
@@ -35,7 +35,7 @@ namespace Gsmservice.Gateway
         /// As a successful result a `ListIncomingMessagesResponse` object will be returned with `IncomingMessages` property of type `List&lt;IncomingMessage&gt;` containing `IncomingMessage` objects, each object per single received message. `ListIncomingMessagesResponse` object will contain also a `Headers` property where you can find `X-Total-Results` (a total count of all received messages which are available in incoming box on your account), `X-Total-Pages` (a total number of all pages with results), `X-Current-Page` (A current page number) and `X-Limit` (messages count per single page) elements.
         /// </remarks>
         /// </summary>
-        Task<ListIncomingMessagesResponse> ListAsync(long? page = null, long? limit = null, RetryConfig? retryConfig = null);
+        Task<ListIncomingMessagesResponse> ListAsync(long? page = 1, long? limit = 10, RetryConfig? retryConfig = null);
 
         /// <summary>
         /// Get the incoming messages by IDs
@@ -54,10 +54,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "2.1.6";
-        private const string _sdkGenVersion = "2.438.15";
-        private const string _openapiDocVersion = "1.1.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 2.1.6 2.438.15 1.1.2 Gsmservice.Gateway";
+        private const string _sdkVersion = "3.0.1";
+        private const string _sdkGenVersion = "2.539.1";
+        private const string _openapiDocVersion = "1.2.1";
+        private const string _userAgent = "speakeasy-sdk/csharp 3.0.1 2.539.1 1.2.1 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
@@ -70,7 +70,7 @@ namespace Gsmservice.Gateway
             SDKConfiguration = config;
         }
 
-        public async Task<ListIncomingMessagesResponse> ListAsync(long? page = null, long? limit = null, RetryConfig? retryConfig = null)
+        public async Task<ListIncomingMessagesResponse> ListAsync(long? page = 1, long? limit = 10, RetryConfig? retryConfig = null)
         {
             var request = new ListIncomingMessagesRequest()
             {
@@ -176,7 +176,17 @@ namespace Gsmservice.Gateway
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500)
+            {
+                if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
+                {
+                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Include);
+                    throw obj!;
+                }
+
+                throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
+            }
+            else if(responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {
@@ -295,7 +305,17 @@ namespace Gsmservice.Gateway
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 400 || responseStatusCode == 401 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500)
+            {
+                if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
+                {
+                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
+                    throw obj!;
+                }
+
+                throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
+            }
+            else if(responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {

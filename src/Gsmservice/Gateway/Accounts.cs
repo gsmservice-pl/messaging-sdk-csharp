@@ -13,14 +13,14 @@ namespace Gsmservice.Gateway
     using Gsmservice.Gateway.Models.Components;
     using Gsmservice.Gateway.Models.Errors;
     using Gsmservice.Gateway.Models.Requests;
-    using Gsmservice.Gateway.Utils.Retries;
     using Gsmservice.Gateway.Utils;
+    using Gsmservice.Gateway.Utils.Retries;
     using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using System.Net.Http.Headers;
-    using System.Net.Http;
-    using System.Threading.Tasks;
     using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
 
     public interface IAccounts
     {
@@ -30,7 +30,7 @@ namespace Gsmservice.Gateway
         /// 
         /// <remarks>
         /// <br/>
-        /// Get current account balance and other details of your account. You can check also account limit and if account is main one. Main accounts have unlimited privileges and using <a href="https://panel.gsmservice.pl">User Panel</a> you can create as many subaccounts as you need.<br/>
+        /// Get current account balance and other details of your account. You can check also account limit and if account is main one. Main accounts have unlimited privileges and using <a href="https://panel.szybkisms.pl">User Panel</a> you can create as many subaccounts as you need.<br/>
         ///  <br/>
         /// This method doesn&apos;t take any parameters. As a successful result a details of current account you are logged in using an API Access Token will be returned.
         /// </remarks>
@@ -42,7 +42,7 @@ namespace Gsmservice.Gateway
         /// 
         /// <remarks>
         /// <br/>
-        /// Check account balance and other details such subcredit balance of a subaccount. Subaccounts are additional users who can access your account services and the details. You can restrict access level and setup privileges to subaccounts using <a href="https://panel.gsmservice.pl">user panel</a>.<br/>
+        /// Check account balance and other details such subcredit balance of a subaccount. Subaccounts are additional users who can access your account services and the details. You can restrict access level and setup privileges to subaccounts using <a href="https://panel.szybkisms.pl">user panel</a>.<br/>
         /// <br/>
         /// This method accepts a `string` with user login. You should pass there the full subaccount login to access its data. <br/>
         /// <br/>
@@ -56,10 +56,10 @@ namespace Gsmservice.Gateway
     {
         public SDKConfig SDKConfiguration { get; private set; }
         private const string _language = "csharp";
-        private const string _sdkVersion = "2.1.6";
-        private const string _sdkGenVersion = "2.438.15";
-        private const string _openapiDocVersion = "1.1.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 2.1.6 2.438.15 1.1.2 Gsmservice.Gateway";
+        private const string _sdkVersion = "3.0.1";
+        private const string _sdkGenVersion = "2.539.1";
+        private const string _openapiDocVersion = "1.2.1";
+        private const string _userAgent = "speakeasy-sdk/csharp 3.0.1 2.539.1 1.2.1 Gsmservice.Gateway";
         private string _serverUrl = "";
         private ISpeakeasyHttpClient _client;
         private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
@@ -174,7 +174,17 @@ namespace Gsmservice.Gateway
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode >= 400 && responseStatusCode < 500)
+            {
+                if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
+                {
+                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
+                    throw obj!;
+                }
+
+                throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
+            }
+            else if(responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {
@@ -293,7 +303,17 @@ namespace Gsmservice.Gateway
 
                 throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
             }
-            else if(responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500 || responseStatusCode >= 500 && responseStatusCode < 600)
+            else if(responseStatusCode == 401 || responseStatusCode == 403 || responseStatusCode == 404 || responseStatusCode >= 400 && responseStatusCode < 500)
+            {
+                if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
+                {
+                    var obj = ResponseBodyDeserializer.Deserialize<Models.Errors.ErrorResponse>(await httpResponse.Content.ReadAsStringAsync(), NullValueHandling.Ignore);
+                    throw obj!;
+                }
+
+                throw new Models.Errors.SDKException("Unknown content type received", httpRequest, httpResponse);
+            }
+            else if(responseStatusCode >= 500 && responseStatusCode < 600)
             {
                 if(Utilities.IsContentTypeMatch("application/problem+json", contentType))
                 {

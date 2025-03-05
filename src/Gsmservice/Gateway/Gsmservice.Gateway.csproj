@@ -3,30 +3,30 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Gsmservice.Gateway</PackageId>
-    <Version>2.1.6</Version>
+    <Version>3.0.1</Version>
     <TargetFramework>net8.0</TargetFramework>
-    <Authors>Gsmservice.pl</Authors>
-    <Copyright>Copyright (c) Gsmservice.pl 2024</Copyright>
+    <Authors>SzybkiSMS.pl</Authors>
+    <Copyright>Copyright (c) SzybkiSMS.pl 2025</Copyright>
     <PackageTags>sdk messaging sms gateway messages bramka</PackageTags>
-    <PackageProjectUrl>https://bramka.gsmservice.pl</PackageProjectUrl>
-    <Description>Messaging Gateway GSMService.pl
-
-This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via [https://bramka.gsmservice.pl](https://bramka.gsmservice.pl) messaging platform.
-
-*Client* class is used to initialize SDK environment.
-
-Please initialize it this way:
-
-```
-using Gsmservice.Gateway;
-
-var sdk = new Client(bearer: "YOUR API ACCESS TOKEN");
-```
-
-If you want to use a Sandbox test system please initialize it as follows:
-
-```
-var sdk = new Client(bearer: "YOUR API ACCESS TOKEN", null, SDKConfig.Server.Sandbox);
+    <PackageProjectUrl>https://szybkisms.pl</PackageProjectUrl>
+    <Description>Messaging Gateway SzybkiSMS.pl<br/>
+<br/>
+This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://szybkisms.pl">https://szybkisms.pl</a> messaging platform.<br/>
+<br/>
+*Client* class is used to initialize SDK environment.<br/>
+<br/>
+Please initialize it this way:<br/>
+<br/>
+```<br/>
+using Gsmservice.Gateway;<br/>
+<br/>
+var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;);<br/>
+```<br/>
+<br/>
+If you want to use a Sandbox test system please initialize it as follows:<br/>
+<br/>
+```<br/>
+var sdk = new Client(bearer: &quot;YOUR API ACCESS TOKEN&quot;, null, SDKConfig.Server.Sandbox);<br/>
 ```</Description>
   </PropertyGroup>
 

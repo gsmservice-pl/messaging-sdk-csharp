@@ -2,9 +2,9 @@
 
 ## Overview
 
-Messaging Gateway GSMService.pl
+Messaging Gateway SzybkiSMS.pl
 
-This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via [https://bramka.gsmservice.pl](https://bramka.gsmservice.pl) messaging platform.
+This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via [https://szybkisms.pl](https://szybkisms.pl) messaging platform.
 
 *Client* class is used to initialize SDK environment.
 
@@ -22,5 +22,7 @@ If you want to use a Sandbox test system please initialize it as follows:
 var sdk = new Client(bearer: "YOUR API ACCESS TOKEN", null, SDKConfig.Server.Sandbox);
 ```
 
-Bramka GSMService.pl
-<https://bramka.gsmservice.pl>
+SzybkiSMS.pl
+<https://szybkisms.pl>
+
+### Available Operations

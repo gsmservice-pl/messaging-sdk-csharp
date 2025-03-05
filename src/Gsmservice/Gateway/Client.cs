@@ -12,20 +12,20 @@ namespace Gsmservice.Gateway
     using Gsmservice.Gateway.Hooks;
     using Gsmservice.Gateway.Models.Components;
     using Gsmservice.Gateway.Models.Errors;
-    using Gsmservice.Gateway.Utils.Retries;
     using Gsmservice.Gateway.Utils;
+    using Gsmservice.Gateway.Utils.Retries;
     using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using System;
 
     /// <summary>
-    /// Messaging Gateway GSMService.pl<br/>
+    /// Messaging Gateway SzybkiSMS.pl<br/>
     /// 
     /// <remarks>
     /// <br/>
-    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
+    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://szybkisms.pl">https://szybkisms.pl</a> messaging platform.<br/>
     /// <br/>
     /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
@@ -44,7 +44,7 @@ namespace Gsmservice.Gateway
     /// ```
     /// </remarks>
     /// 
-    /// <see>https://bramka.gsmservice.pl} - Bramka GSMService.pl</see>
+    /// <see>https://szybkisms.pl} - SzybkiSMS.pl</see>
     /// </summary>
     public interface IClient
     {
@@ -70,8 +70,8 @@ namespace Gsmservice.Gateway
         /// </summary>
         public static readonly Dictionary<Server, string> ServerMap = new Dictionary<Server, string>()
         {
-            { Server.Prod, "https://api.gsmservice.pl/rest" },
-            { Server.Sandbox, "https://api.gsmservice.pl/rest-sandbox" },
+            { Server.Prod, "https://api.szybkisms.pl/rest" },
+            { Server.Sandbox, "https://api.szybkisms.pl/rest-sandbox" },
         };
 
         public string ServerUrl = "";
@@ -112,11 +112,11 @@ namespace Gsmservice.Gateway
     }
 
     /// <summary>
-    /// Messaging Gateway GSMService.pl<br/>
+    /// Messaging Gateway SzybkiSMS.pl<br/>
     /// 
     /// <remarks>
     /// <br/>
-    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://bramka.gsmservice.pl">https://bramka.gsmservice.pl</a> messaging platform.<br/>
+    /// This package includes Messaging SDK for C# to send SMS and MMS messages directly from your app via <a href="https://szybkisms.pl">https://szybkisms.pl</a> messaging platform.<br/>
     /// <br/>
     /// *Client* class is used to initialize SDK environment.<br/>
     /// <br/>
@@ -135,17 +135,17 @@ namespace Gsmservice.Gateway
     /// ```
     /// </remarks>
     /// 
-    /// <see>https://bramka.gsmservice.pl} - Bramka GSMService.pl</see>
+    /// <see>https://szybkisms.pl} - SzybkiSMS.pl</see>
     /// </summary>
     public class Client: IClient
     {
         public SDKConfig SDKConfiguration { get; private set; }
 
         private const string _language = "csharp";
-        private const string _sdkVersion = "2.1.6";
-        private const string _sdkGenVersion = "2.438.15";
-        private const string _openapiDocVersion = "1.1.2";
-        private const string _userAgent = "speakeasy-sdk/csharp 2.1.6 2.438.15 1.1.2 Gsmservice.Gateway";
+        private const string _sdkVersion = "3.0.1";
+        private const string _sdkGenVersion = "2.539.1";
+        private const string _openapiDocVersion = "1.2.1";
+        private const string _userAgent = "speakeasy-sdk/csharp 3.0.1 2.539.1 1.2.1 Gsmservice.Gateway";
         private string _serverUrl = "";
         private SDKConfig.Server? _server = null;
         private ISpeakeasyHttpClient _client;

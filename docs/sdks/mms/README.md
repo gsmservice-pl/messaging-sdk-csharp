@@ -22,8 +22,8 @@ As a successful result a `GetMmsPriceResponse` object will be returned  containi
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -44,7 +44,6 @@ GetMmsPriceRequestBody req = GetMmsPriceRequestBody.CreateArrayOfMmsMessage(
                     "<file_body in base64 format>",
                 }
             ),
-            Date = null,
         },
     }
 );
@@ -68,7 +67,8 @@ var res = await sdk.Outgoing.Mms.GetPriceAsync(req);
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 4XX, 5XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 4XX                                  | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
 
 ## Send
 
@@ -83,8 +83,8 @@ As a successful result a `SendMmsResponse` object will be returned with `Message
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -104,7 +104,6 @@ SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
                     "<file_body in base64 format>",
                 }
             ),
-            Date = null,
         },
     }
 );
@@ -128,4 +127,5 @@ var res = await sdk.Outgoing.Mms.SendAsync(req);
 
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX, 5XX                        | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |

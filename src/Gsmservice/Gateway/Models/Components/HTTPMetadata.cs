@@ -11,8 +11,8 @@ namespace Gsmservice.Gateway.Models.Components
 {
     using Gsmservice.Gateway.Utils;
     using Newtonsoft.Json;
-    using System.Net.Http;
     using System;
+    using System.Net.Http;
     
     public class HTTPMetadata
     {

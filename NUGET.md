@@ -10,8 +10,8 @@ This example demonstrates simple sending SMS message to a single recipient:
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -25,11 +25,6 @@ SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
                 }
             ),
             Message = "To jest treść wiadomości",
-            Sender = "Bramka SMS",
-            Type = Gsmservice.Gateway.Models.Components.SmsType.SmsPro,
-            Unicode = true,
-            Flash = false,
-            Date = null,
         },
     }
 );
@@ -45,8 +40,8 @@ This example demonstrates simple sending MMS message to a single recipient:
 
 ```csharp
 using Gsmservice.Gateway;
-using Gsmservice.Gateway.Models.Requests;
 using Gsmservice.Gateway.Models.Components;
+using Gsmservice.Gateway.Models.Requests;
 using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -66,7 +61,6 @@ SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
                     "<file_body in base64 format>",
                 }
             ),
-            Date = null,
         },
     }
 );
@@ -143,16 +137,16 @@ By default, an API error will raise a `Gsmservice.Gateway.Models.Errors.SDKExcep
 
 When custom error responses are specified for an operation, the SDK may also throw their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `GetAsync` method throws the following exceptions:
 
-| Error Type                                     | Status Code                                    | Content Type                                   |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 401, 403, 4XX, 5XX                             | application/problem+json                       |
+| Error Type                                     | Status Code   | Content Type             |
+| ---------------------------------------------- | ------------- | ------------------------ |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 401, 403, 4XX | application/problem+json |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX           | application/problem+json |
 
 ### Example
 
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
-using System;
 using Gsmservice.Gateway.Models.Errors;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
@@ -166,6 +160,11 @@ try
 catch (Exception ex)
 {
     if (ex is Models.Errors.ErrorResponse)
+    {
+        // Handle exception data
+        throw;
+    }
+    else if (ex is Models.Errors.ErrorResponse)
     {
         // Handle exception data
         throw;
@@ -186,16 +185,43 @@ catch (Exception ex)
 
 You can override the default server globally by passing a server name to the `server: string` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name | Server | Variables |
-| ----- | ------ | --------- |
-| `prod` | `https://api.gsmservice.pl/rest` | None |
-| `sandbox` | `https://api.gsmservice.pl/rest-sandbox` | None |
+| Name      | Server                                  | Description           |
+| --------- | --------------------------------------- | --------------------- |
+| `prod`    | `https://api.szybkisms.pl/rest`         | Production system     |
+| `sandbox` | `https://api.szybkisms.pl/rest-sandbox` | Test system (SANDBOX) |
 
+#### Example
 
+```csharp
+using Gsmservice.Gateway;
+using Gsmservice.Gateway.Models.Components;
+
+var sdk = new Client(
+    server: "sandbox",
+    bearer: "<YOUR API ACCESS TOKEN>"
+);
+
+var res = await sdk.Accounts.GetAsync();
+
+// handle response
+```
 
 ### Override Server URL Per-Client
 
-The default server can also be overridden globally by passing a URL to the `serverUrl: str` optional parameter when initializing the SDK client instance. For example:
+The default server can also be overridden globally by passing a URL to the `serverUrl: string` optional parameter when initializing the SDK client instance. For example:
+```csharp
+using Gsmservice.Gateway;
+using Gsmservice.Gateway.Models.Components;
+
+var sdk = new Client(
+    serverUrl: "https://api.szybkisms.pl/rest",
+    bearer: "<YOUR API ACCESS TOKEN>"
+);
+
+var res = await sdk.Accounts.GetAsync();
+
+// handle response
+```
 <!-- End Server Selection [server] -->
 
 <!-- Start Authentication [security] -->
@@ -205,9 +231,9 @@ The default server can also be overridden globally by passing a URL to the `serv
 
 This SDK supports the following security scheme globally:
 
-| Name        | Type        | Scheme      |
-| ----------- | ----------- | ----------- |
-| `Bearer`    | http        | HTTP Bearer |
+| Name     | Type | Scheme      |
+| -------- | ---- | ----------- |
+| `Bearer` | http | HTTP Bearer |
 
 To authenticate with the API the `Bearer` parameter must be set when initializing the SDK client instance. For example:
 ```csharp

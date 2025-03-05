@@ -35,8 +35,8 @@ namespace Gsmservice.Gateway.Models.Components
         /// <summary>
         /// MMS message content
         /// </summary>
-        [JsonProperty("message", NullValueHandling = NullValueHandling.Include)]
-        public string? Message { get; set; }
+        [JsonProperty("message")]
+        public string? Message { get; set; } = null;
 
         /// <summary>
         /// Attachments for the message. You can pass here images, audio and video files bodies. To set one attachment please use `Attachments.CreateStr()` method simply passing to it a `string` with attachment body encoded by `base64`. To set multiple attachments - please use `Attachments.CreateArrayOfStr()` method passing to it `List&lt;string&gt;` with attachment bodies encoded by `base64`. Max 3 attachments per message.
