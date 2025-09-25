@@ -10,16 +10,72 @@
 namespace Gsmservice.Gateway.Models.Components
 {
     using Gsmservice.Gateway.Utils;
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
     
     /// <summary>
     /// Message type (SmsType.SmsPro -&gt; SMS PRO, SmsType.SmsEco -&gt; SMS ECO, SmsType.SmsTwoWay -&gt;SMS 2WAY, SmsType.Mms -&gt; MMS)
     /// </summary>
-    public enum MessageType
+    [JsonConverter(typeof(OpenEnumConverter))]
+    public class MessageType : IEquatable<MessageType>
     {
-        SmsPro = 1,
-        SmsEco = 3,
-        SmsTwoWay = 4,
-        Mms = 10,
+        public static readonly MessageType SmsPro = new MessageType(1);
+        public static readonly MessageType SmsEco = new MessageType(3);
+        public static readonly MessageType SmsTwoWay = new MessageType(4);
+        public static readonly MessageType Mms = new MessageType(10);
+
+        private static readonly Dictionary <long, MessageType> _knownValues =
+            new Dictionary <long, MessageType> ()
+            {
+                [1] = SmsPro,
+                [3] = SmsEco,
+                [4] = SmsTwoWay,
+                [10] = Mms
+            };
+
+        private static readonly ConcurrentDictionary<long, MessageType> _values =
+            new ConcurrentDictionary<long, MessageType>(_knownValues);
+
+        private MessageType(long value)
+        {
+            Value = value;
+        }
+
+        public long Value { get; }
+
+        public static MessageType Of(long value)
+        {
+            return _values.GetOrAdd(value, _ => new MessageType(value));
+        }
+
+        public static implicit operator MessageType(long value) => Of(value);
+        public static implicit operator long(MessageType messagetype) => messagetype.Value;
+
+        public static MessageType[] Values()
+        {
+            return _values.Values.ToArray();
+        }
+
+        public override string ToString() => Value.ToString();
+
+        public bool IsKnown()
+        {
+            return _knownValues.ContainsKey(Value);
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as MessageType);
+
+        public bool Equals(MessageType? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            return string.Equals(Value, other.Value);
+        }
+
+        public override int GetHashCode() => Value.GetHashCode();
     }
 
 }

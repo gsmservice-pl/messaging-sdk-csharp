@@ -20,31 +20,24 @@ As a successful result a `GetMmsPriceResponse` object will be returned  containi
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getMmsPrice" method="post" path="/messages/mms/price" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-GetMmsPriceRequestBody req = GetMmsPriceRequestBody.CreateArrayOfMmsMessage(
-    new List<MmsMessage>() {
-        new MmsMessage() {
-            Recipients = Recipients.CreatePhoneNumberWithCid(
-                new PhoneNumberWithCid() {
-                    Nr = "+48999999999",
-                    Cid = "my-id-1113",
-                }
-            ),
-            Subject = "To jest temat wiadomości",
-            Message = "To jest treść wiadomości",
-            Attachments = Attachments.CreateArrayOfStr(
-                new List<string>() {
-                    "<file_body in base64 format>",
-                }
-            ),
-        },
+GetMmsPriceRequestBody req = GetMmsPriceRequestBody.CreateMmsMessage(
+    new MmsMessage() {
+        Recipients = Recipients.CreateStr(
+            "+48999999999"
+        ),
+        Subject = "This is a subject of the message",
+        Message = "This is MMS message content.",
+        Attachments = Attachments.CreateStr(
+            "<file body in base64 format>"
+        ),
     }
 );
 
@@ -81,30 +74,24 @@ As a successful result a `SendMmsResponse` object will be returned with `Message
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="sendMms" method="post" path="/messages/mms" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
-    new List<MmsMessage>() {
-        new MmsMessage() {
-            Recipients = Recipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Subject = "To jest temat wiadomości",
-            Message = "To jest treść wiadomości",
-            Attachments = Attachments.CreateArrayOfStr(
-                new List<string>() {
-                    "<file_body in base64 format>",
-                }
-            ),
-        },
+SendMmsRequestBody req = SendMmsRequestBody.CreateMmsMessage(
+    new MmsMessage() {
+        Recipients = Recipients.CreateStr(
+            "+48999999999"
+        ),
+        Subject = "This is a subject of the message",
+        Message = "This is MMS message content.",
+        Attachments = Attachments.CreateStr(
+            "<file body in base64 format>"
+        ),
     }
 );
 

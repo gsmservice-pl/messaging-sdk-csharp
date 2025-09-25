@@ -10,15 +10,70 @@
 namespace Gsmservice.Gateway.Models.Components
 {
     using Gsmservice.Gateway.Utils;
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
     
     /// <summary>
     /// SMS type (SmsType.SmsPro -&gt; SMS PRO, SmsType.SmsEco -&gt; SMS ECO, SmsType.SmsTwoWay -&gt; SMS 2WAY)
     /// </summary>
-    public enum SmsType
+    [JsonConverter(typeof(OpenEnumConverter))]
+    public class SmsType : IEquatable<SmsType>
     {
-        SmsPro = 1,
-        SmsEco = 3,
-        SmsTwoWay = 4,
+        public static readonly SmsType SmsPro = new SmsType(1);
+        public static readonly SmsType SmsEco = new SmsType(3);
+        public static readonly SmsType SmsTwoWay = new SmsType(4);
+
+        private static readonly Dictionary <long, SmsType> _knownValues =
+            new Dictionary <long, SmsType> ()
+            {
+                [1] = SmsPro,
+                [3] = SmsEco,
+                [4] = SmsTwoWay
+            };
+
+        private static readonly ConcurrentDictionary<long, SmsType> _values =
+            new ConcurrentDictionary<long, SmsType>(_knownValues);
+
+        private SmsType(long value)
+        {
+            Value = value;
+        }
+
+        public long Value { get; }
+
+        public static SmsType Of(long value)
+        {
+            return _values.GetOrAdd(value, _ => new SmsType(value));
+        }
+
+        public static implicit operator SmsType(long value) => Of(value);
+        public static implicit operator long(SmsType smstype) => smstype.Value;
+
+        public static SmsType[] Values()
+        {
+            return _values.Values.ToArray();
+        }
+
+        public override string ToString() => Value.ToString();
+
+        public bool IsKnown()
+        {
+            return _knownValues.ContainsKey(Value);
+        }
+
+        public override bool Equals(object? obj) => Equals(obj as SmsType);
+
+        public bool Equals(SmsType? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            return string.Equals(Value, other.Value);
+        }
+
+        public override int GetHashCode() => Value.GetHashCode();
     }
 
 }

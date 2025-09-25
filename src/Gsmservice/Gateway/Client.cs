@@ -55,61 +55,6 @@ namespace Gsmservice.Gateway
         public ISenders Senders { get; }
     }
 
-    public class SDKConfig
-    {
-        /// <summary>
-        /// Server identifiers available to the SDK.
-        /// </summary>
-        public enum Server {
-        Prod,
-        Sandbox,
-        }
-
-        /// <summary>
-        /// Server URLs available to the SDK.
-        /// </summary>
-        public static readonly Dictionary<Server, string> ServerMap = new Dictionary<Server, string>()
-        {
-            { Server.Prod, "https://api.szybkisms.pl/rest" },
-            { Server.Sandbox, "https://api.szybkisms.pl/rest-sandbox" },
-        };
-
-        public string ServerUrl = "";
-        public Server? ServerName = null;
-        public SDKHooks Hooks = new SDKHooks();
-        public RetryConfig? RetryConfig = null;
-
-        public string GetTemplatedServerUrl()
-        {
-            if (!String.IsNullOrEmpty(this.ServerUrl))
-            {
-                return Utilities.TemplateUrl(Utilities.RemoveSuffix(this.ServerUrl, "/"), new Dictionary<string, string>());
-            }
-            if (this.ServerName is null)
-            {
-                this.ServerName = SDKConfig.Server.Prod;
-            }
-            else if (!SDKConfig.ServerMap.ContainsKey(this.ServerName.Value))
-            {
-                throw new Exception($"Invalid server \"{this.ServerName.Value}\"");
-            }
-
-            Dictionary<string, string> serverDefault = new Dictionary<string, string>();
-
-            return Utilities.TemplateUrl(SDKConfig.ServerMap[this.ServerName.Value], serverDefault);
-        }
-
-        public ISpeakeasyHttpClient InitHooks(ISpeakeasyHttpClient client)
-        {
-            string preHooksUrl = GetTemplatedServerUrl();
-            var (postHooksUrl, postHooksClient) = this.Hooks.SDKInit(preHooksUrl, client);
-            if (preHooksUrl != postHooksUrl)
-            {
-                this.ServerUrl = postHooksUrl;
-            }
-            return postHooksClient;
-        }
-    }
 
     /// <summary>
     /// Messaging Gateway SzybkiSMS.pl<br/>
@@ -142,26 +87,33 @@ namespace Gsmservice.Gateway
         public SDKConfig SDKConfiguration { get; private set; }
 
         private const string _language = "csharp";
-        private const string _sdkVersion = "3.0.1";
-        private const string _sdkGenVersion = "2.539.1";
-        private const string _openapiDocVersion = "1.2.1";
-        private const string _userAgent = "speakeasy-sdk/csharp 3.0.1 2.539.1 1.2.1 Gsmservice.Gateway";
-        private string _serverUrl = "";
-        private SDKConfig.Server? _server = null;
-        private ISpeakeasyHttpClient _client;
-        private Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource;
+        private const string _sdkVersion = "4.0.1";
+        private const string _sdkGenVersion = "2.716.5";
+        private const string _openapiDocVersion = "1.2.2";
         public IAccounts Accounts { get; private set; }
         public IOutgoing Outgoing { get; private set; }
         public IIncoming Incoming { get; private set; }
         public ICommon Common { get; private set; }
         public ISenders Senders { get; private set; }
 
+        public Client(SDKConfig config)
+        {
+            SDKConfiguration = config;
+            InitHooks();
+
+            Accounts = new Accounts(SDKConfiguration);
+
+            Outgoing = new Outgoing(SDKConfiguration);
+
+            Incoming = new Incoming(SDKConfiguration);
+
+            Common = new Common(SDKConfiguration);
+
+            Senders = new Senders(SDKConfiguration);
+        }
+
         public Client(string? bearer = null, Func<string>? bearerSource = null, SDKConfig.Server? server = null, string? serverUrl = null, Dictionary<string, string>? urlParams = null, ISpeakeasyHttpClient? client = null, RetryConfig? retryConfig = null)
         {
-            if (server != null)
-            {
-              _server = server;
-            }
 
             if (serverUrl != null)
             {
@@ -169,10 +121,8 @@ namespace Gsmservice.Gateway
                 {
                     serverUrl = Utilities.TemplateUrl(serverUrl, urlParams);
                 }
-                _serverUrl = serverUrl;
             }
-
-            _client = client ?? new SpeakeasyHttpClient();
+            Func<Gsmservice.Gateway.Models.Components.Security>? _securitySource = null;
 
             if(bearerSource != null)
             {
@@ -183,29 +133,93 @@ namespace Gsmservice.Gateway
                 _securitySource = () => new Gsmservice.Gateway.Models.Components.Security() { Bearer = bearer };
             }
 
-            SDKConfiguration = new SDKConfig()
+            SDKConfiguration = new SDKConfig(client)
             {
-                ServerName = _server,
-                ServerUrl = _serverUrl,
+                ServerName = server,
+                ServerUrl = serverUrl == null ? "" : serverUrl,
+                SecuritySource = _securitySource,
                 RetryConfig = retryConfig
             };
 
-            _client = SDKConfiguration.InitHooks(_client);
+            InitHooks();
 
+            Accounts = new Accounts(SDKConfiguration);
 
-            Accounts = new Accounts(_client, _securitySource, _serverUrl, SDKConfiguration);
+            Outgoing = new Outgoing(SDKConfiguration);
 
+            Incoming = new Incoming(SDKConfiguration);
 
-            Outgoing = new Outgoing(_client, _securitySource, _serverUrl, SDKConfiguration);
+            Common = new Common(SDKConfiguration);
 
-
-            Incoming = new Incoming(_client, _securitySource, _serverUrl, SDKConfiguration);
-
-
-            Common = new Common(_client, _securitySource, _serverUrl, SDKConfiguration);
-
-
-            Senders = new Senders(_client, _securitySource, _serverUrl, SDKConfiguration);
+            Senders = new Senders(SDKConfiguration);
         }
+
+        private void InitHooks()
+        {
+            string preHooksUrl = SDKConfiguration.GetTemplatedServerUrl();
+            var (postHooksUrl, postHooksClient) = SDKConfiguration.Hooks.SDKInit(preHooksUrl, SDKConfiguration.Client);
+            var config = SDKConfiguration;
+            if (preHooksUrl != postHooksUrl)
+            {
+                config.ServerUrl = postHooksUrl;
+            }
+            config.Client = postHooksClient;
+            SDKConfiguration = config;
+        }
+
+        public class SDKBuilder
+        {
+            private SDKConfig _sdkConfig = new SDKConfig(client: new SpeakeasyHttpClient());
+
+            public SDKBuilder() { }
+
+            public SDKBuilder WithServer(SDKConfig.Server server)
+            {
+                _sdkConfig.ServerName = server;
+                return this;
+            }
+
+            public SDKBuilder WithServerUrl(string serverUrl, Dictionary<string, string>? serverVariables = null)
+            {
+                if (serverVariables != null)
+                {
+                    serverUrl = Utilities.TemplateUrl(serverUrl, serverVariables);
+                }
+                _sdkConfig.ServerUrl = serverUrl;
+                return this;
+            }
+
+            public SDKBuilder WithBearerSource(Func<string> bearerSource)
+            {
+                _sdkConfig.SecuritySource = () => new Gsmservice.Gateway.Models.Components.Security() { Bearer = bearerSource() };
+                return this;
+            }
+
+            public SDKBuilder WithBearer(string bearer)
+            {
+                _sdkConfig.SecuritySource = () => new Gsmservice.Gateway.Models.Components.Security() { Bearer = bearer };
+                return this;
+            }
+
+            public SDKBuilder WithClient(ISpeakeasyHttpClient client)
+            {
+                _sdkConfig.Client = client;
+                return this;
+            }
+
+            public SDKBuilder WithRetryConfig(RetryConfig retryConfig)
+            {
+                _sdkConfig.RetryConfig = retryConfig;
+                return this;
+            }
+
+            public Client Build()
+            {
+              return new Client(_sdkConfig);
+            }
+
+        }
+
+        public static SDKBuilder Builder() => new SDKBuilder();
     }
 }

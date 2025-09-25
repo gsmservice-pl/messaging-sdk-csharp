@@ -12,6 +12,10 @@ namespace Gsmservice.Gateway.Models.Components
     using Gsmservice.Gateway.Models.Components;
     using Gsmservice.Gateway.Utils;
     using Newtonsoft.Json;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
     
     /// <summary>
     /// An object with the properties and price of a single message

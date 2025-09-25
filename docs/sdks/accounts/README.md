@@ -17,6 +17,7 @@ This method doesn't take any parameters. As a successful result a details of cur
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getAccountDetails" method="get" path="/account" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -50,6 +51,7 @@ As a successful result the details of subaccount with provided login will be ret
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getSubaccountDetails" method="get" path="/account/{user_login}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;

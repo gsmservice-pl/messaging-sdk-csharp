@@ -17,17 +17,17 @@ namespace Gsmservice.Gateway.Models.Requests
     using System.Collections.Generic;
     using System.Numerics;
     using System.Reflection;
-    
 
     public class SendSmsRequestBodyType
     {
         private SendSmsRequestBodyType(string value) { Value = value; }
 
         public string Value { get; private set; }
+
         public static SendSmsRequestBodyType SmsMessage { get { return new SendSmsRequestBodyType("SmsMessage"); } }
-        
+
         public static SendSmsRequestBodyType ArrayOfSmsMessage { get { return new SendSmsRequestBodyType("arrayOfSmsMessage"); } }
-        
+
         public static SendSmsRequestBodyType Null { get { return new SendSmsRequestBodyType("null"); } }
 
         public override string ToString() { return Value; }
@@ -60,8 +60,10 @@ namespace Gsmservice.Gateway.Models.Requests
     /// To send a single SMS or messages with the same content to multiple recipients, please use `SendSmsRequestBody.CreateSmsMessage()` method with a single `SmsMessage` object with the properties of this message. To send multiple messages with different content at the same time, please use `SendSmsRequestBody.CreateArrayOfSmsMessage()` method passing to it `List&lt;SmsMessage&gt;` with the properties of each message.
     /// </summary>
     [JsonConverter(typeof(SendSmsRequestBody.SendSmsRequestBodyConverter))]
-    public class SendSmsRequestBody {
-        public SendSmsRequestBody(SendSmsRequestBodyType type) {
+    public class SendSmsRequestBody
+    {
+        public SendSmsRequestBody(SendSmsRequestBodyType type)
+        {
             Type = type;
         }
 
@@ -72,17 +74,16 @@ namespace Gsmservice.Gateway.Models.Requests
         public List<SmsMessage>? ArrayOfSmsMessage { get; set; }
 
         public SendSmsRequestBodyType Type { get; set; }
-
-
-        public static SendSmsRequestBody CreateSmsMessage(SmsMessage smsMessage) {
+        public static SendSmsRequestBody CreateSmsMessage(SmsMessage smsMessage)
+        {
             SendSmsRequestBodyType typ = SendSmsRequestBodyType.SmsMessage;
 
             SendSmsRequestBody res = new SendSmsRequestBody(typ);
             res.SmsMessage = smsMessage;
             return res;
         }
-
-        public static SendSmsRequestBody CreateArrayOfSmsMessage(List<SmsMessage> arrayOfSmsMessage) {
+        public static SendSmsRequestBody CreateArrayOfSmsMessage(List<SmsMessage> arrayOfSmsMessage)
+        {
             SendSmsRequestBodyType typ = SendSmsRequestBodyType.ArrayOfSmsMessage;
 
             SendSmsRequestBody res = new SendSmsRequestBody(typ);
@@ -90,7 +91,8 @@ namespace Gsmservice.Gateway.Models.Requests
             return res;
         }
 
-        public static SendSmsRequestBody CreateNull() {
+        public static SendSmsRequestBody CreateNull()
+        {
             SendSmsRequestBodyType typ = SendSmsRequestBodyType.Null;
             return new SendSmsRequestBody(typ);
         }
@@ -181,23 +183,25 @@ namespace Gsmservice.Gateway.Models.Requests
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 SendSmsRequestBody res = (SendSmsRequestBody)value;
                 if (SendSmsRequestBodyType.FromString(res.Type).Equals(SendSmsRequestBodyType.Null))
                 {
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 if (res.SmsMessage != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.SmsMessage));
                     return;
                 }
+
                 if (res.ArrayOfSmsMessage != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfSmsMessage));
                     return;
                 }
-
             }
 
         }

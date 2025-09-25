@@ -16,6 +16,7 @@ As a successful result a `PingResponse` object will be returned.
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="ping" method="get" path="/ping" -->
 ```csharp
 using Gsmservice.Gateway;
 

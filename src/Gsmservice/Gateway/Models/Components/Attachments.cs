@@ -16,17 +16,17 @@ namespace Gsmservice.Gateway.Models.Components
     using System.Collections.Generic;
     using System.Numerics;
     using System.Reflection;
-    
 
     public class AttachmentsType
     {
         private AttachmentsType(string value) { Value = value; }
 
         public string Value { get; private set; }
+
         public static AttachmentsType Str { get { return new AttachmentsType("str"); } }
-        
+
         public static AttachmentsType ArrayOfStr { get { return new AttachmentsType("arrayOfStr"); } }
-        
+
         public static AttachmentsType Null { get { return new AttachmentsType("null"); } }
 
         public override string ToString() { return Value; }
@@ -59,8 +59,10 @@ namespace Gsmservice.Gateway.Models.Components
     /// Attachments for the message. You can pass here images, audio and video files bodies. To set one attachment please use `Attachments.CreateStr()` method simply passing to it a `string` with attachment body encoded by `base64`. To set multiple attachments - please use `Attachments.CreateArrayOfStr()` method passing to it `List&lt;string&gt;` with attachment bodies encoded by `base64`. Max 3 attachments per message.
     /// </summary>
     [JsonConverter(typeof(Attachments.AttachmentsConverter))]
-    public class Attachments {
-        public Attachments(AttachmentsType type) {
+    public class Attachments
+    {
+        public Attachments(AttachmentsType type)
+        {
             Type = type;
         }
 
@@ -71,17 +73,16 @@ namespace Gsmservice.Gateway.Models.Components
         public List<string>? ArrayOfStr { get; set; }
 
         public AttachmentsType Type { get; set; }
-
-
-        public static Attachments CreateStr(string str) {
+        public static Attachments CreateStr(string str)
+        {
             AttachmentsType typ = AttachmentsType.Str;
 
             Attachments res = new Attachments(typ);
             res.Str = str;
             return res;
         }
-
-        public static Attachments CreateArrayOfStr(List<string> arrayOfStr) {
+        public static Attachments CreateArrayOfStr(List<string> arrayOfStr)
+        {
             AttachmentsType typ = AttachmentsType.ArrayOfStr;
 
             Attachments res = new Attachments(typ);
@@ -89,7 +90,8 @@ namespace Gsmservice.Gateway.Models.Components
             return res;
         }
 
-        public static Attachments CreateNull() {
+        public static Attachments CreateNull()
+        {
             AttachmentsType typ = AttachmentsType.Null;
             return new Attachments(typ);
         }
@@ -167,23 +169,25 @@ namespace Gsmservice.Gateway.Models.Components
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 Attachments res = (Attachments)value;
                 if (AttachmentsType.FromString(res.Type).Equals(AttachmentsType.Null))
                 {
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 if (res.Str != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.Str, "byte"));
                     return;
                 }
+
                 if (res.ArrayOfStr != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfStr));
                     return;
                 }
-
             }
 
         }

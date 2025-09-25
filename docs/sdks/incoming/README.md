@@ -17,6 +17,7 @@ As a successful result a `ListIncomingMessagesResponse` object will be returned 
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="listIncomingMessages" method="get" path="/incoming" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -58,6 +59,7 @@ As a successful result a `GetIncomingMessagesResponse` object will be returned w
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getIncomingMessages" method="get" path="/incoming/{ids}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;

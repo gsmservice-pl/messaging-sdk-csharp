@@ -18,6 +18,7 @@ As a successful result a `GetMessagesResponse` object will be returned containin
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getMessages" method="get" path="/messages/{ids}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -60,6 +61,7 @@ As a successful result a `CancelMessagesResponse` object will be returned, with 
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="cancelMessages" method="delete" path="/messages/{ids}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -100,6 +102,7 @@ As a successful result a `ListMessagesResponse` object will be returned containi
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="listMessages" method="get" path="/messages" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;

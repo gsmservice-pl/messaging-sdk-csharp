@@ -20,25 +20,21 @@ As a successful result a `GetSmsPriceResponse` object will be returned with `Pri
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="getSmsPrice" method="post" path="/messages/sms/price" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-GetSmsPriceRequestBody req = GetSmsPriceRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreatePhoneNumberWithCid(
-                new PhoneNumberWithCid() {
-                    Nr = "+48999999999",
-                    Cid = "my-id-1113",
-                }
-            ),
-            Message = "To jest treść wiadomości",
-        },
+GetSmsPriceRequestBody req = GetSmsPriceRequestBody.CreateSmsMessage(
+    new SmsMessage() {
+        Recipients = SmsMessageRecipients.CreateStr(
+            "+48999999999"
+        ),
+        Message = "This is SMS message content.",
+        Unicode = true,
     }
 );
 
@@ -75,24 +71,21 @@ As a successful result a `SendSmsResponse` object will be returned with `Message
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="sendSms" method="post" path="/messages/sms" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Message = "To jest treść wiadomości",
-        },
+SendSmsRequestBody req = SendSmsRequestBody.CreateSmsMessage(
+    new SmsMessage() {
+        Recipients = SmsMessageRecipients.CreateStr(
+            "+48999999999"
+        ),
+        Message = "This is SMS message content.",
+        Unicode = true,
     }
 );
 

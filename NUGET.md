@@ -12,20 +12,16 @@ This example demonstrates simple sending SMS message to a single recipient:
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Message = "To jest treść wiadomości",
-        },
+SendSmsRequestBody req = SendSmsRequestBody.CreateSmsMessage(
+    new SmsMessage() {
+        Recipients = SmsMessageRecipients.CreateStr(
+            "+48999999999"
+        ),
+        Message = "This is SMS message content.",
+        Unicode = true,
     }
 );
 
@@ -42,26 +38,19 @@ This example demonstrates simple sending MMS message to a single recipient:
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
-    new List<MmsMessage>() {
-        new MmsMessage() {
-            Recipients = Recipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Subject = "To jest temat wiadomości",
-            Message = "To jest treść wiadomości",
-            Attachments = Attachments.CreateArrayOfStr(
-                new List<string>() {
-                    "<file_body in base64 format>",
-                }
-            ),
-        },
+SendMmsRequestBody req = SendMmsRequestBody.CreateMmsMessage(
+    new MmsMessage() {
+        Recipients = Recipients.CreateStr(
+            "+48999999999"
+        ),
+        Subject = "This is a subject of the message",
+        Message = "This is MMS message content.",
+        Attachments = Attachments.CreateStr(
+            "<file body in base64 format>"
+        ),
     }
 );
 
@@ -125,22 +114,15 @@ var res = await sdk.Accounts.GetAsync();
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-Handling errors in this SDK should largely match your expectations. All operations return a response object or throw an exception.
-
-By default, an API error will raise a `Gsmservice.Gateway.Models.Errors.SDKException` exception, which has the following properties:
+[`ClientException`](./src/Gsmservice/Gateway/Models/Errors/ClientException.cs) is the base exception class for all HTTP error responses. It has the following properties:
 
 | Property      | Type                  | Description           |
 |---------------|-----------------------|-----------------------|
-| `Message`     | *string*              | The error message     |
-| `Request`     | *HttpRequestMessage*  | The HTTP request      |
-| `Response`    | *HttpResponseMessage* | The HTTP response     |
+| `Message`     | *string*              | Error message         |
+| `Request`     | *HttpRequestMessage*  | HTTP request object   |
+| `Response`    | *HttpResponseMessage* | HTTP response object  |
 
-When custom error responses are specified for an operation, the SDK may also throw their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `GetAsync` method throws the following exceptions:
-
-| Error Type                                     | Status Code   | Content Type             |
-| ---------------------------------------------- | ------------- | ------------------------ |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 401, 403, 4XX | application/problem+json |
-| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX           | application/problem+json |
+Some exceptions in this SDK include an additional `Payload` field, which will contain deserialized custom error data when present. Possible exceptions are listed in the [Error Classes](#error-classes) section.
 
 ### Example
 
@@ -157,25 +139,51 @@ try
 
     // handle response
 }
-catch (Exception ex)
+catch (ClientException ex)  // all SDK exceptions inherit from ClientException
 {
-    if (ex is Models.Errors.ErrorResponse)
+    // ex.ToString() provides a detailed error message
+    System.Console.WriteLine(ex);
+
+    // Base exception fields
+    HttpRequestMessage request = ex.Request;
+    HttpResponseMessage response = ex.Response;
+    var statusCode = (int)response.StatusCode;
+    var responseBody = ex.Body;
+
+    if (ex is Models.Errors.ErrorResponse) // different exceptions may be thrown depending on the method
     {
-        // Handle exception data
-        throw;
+        // Check error data fields
+        Models.Errors.ErrorResponsePayload payload = ex.Payload;
+        string Type = payload.Type;
+        long Status = payload.Status;
+        // ...
     }
-    else if (ex is Models.Errors.ErrorResponse)
+
+    // An underlying cause may be provided
+    if (ex.InnerException != null)
     {
-        // Handle exception data
-        throw;
-    }
-    else if (ex is Gsmservice.Gateway.Models.Errors.SDKException)
-    {
-        // Handle default exception
-        throw;
+        Exception cause = ex.InnerException;
     }
 }
+catch (System.Net.Http.HttpRequestException ex)
+{
+    // Check ex.InnerException for Network connectivity errors
+}
 ```
+
+### Error Classes
+
+**Primary exceptions:**
+* [`ClientException`](./src/Gsmservice/Gateway/Models/Errors/ClientException.cs): The base class for HTTP error responses.
+  * [`ErrorResponse`](./src/Gsmservice/Gateway/Models/Errors/ErrorResponse.cs): An object that complies with RFC 9457 containing information about a request error.
+
+<details><summary>Less common exceptions (2)</summary>
+
+* [`System.Net.Http.HttpRequestException`](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httprequestexception): Network connectivity error. For more details about the underlying cause, inspect the `ex.InnerException`.
+
+* Inheriting from [`ClientException`](./src/Gsmservice/Gateway/Models/Errors/ClientException.cs):
+  * [`ResponseValidationError`](./src/Gsmservice/Gateway/Models/Errors/ResponseValidationError.cs): Thrown when the response data could not be deserialized into the expected type.
+</details>
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -197,7 +205,7 @@ using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 
 var sdk = new Client(
-    server: "sandbox",
+    server: SDKConfig.Server.Sandbox,
     bearer: "<YOUR API ACCESS TOKEN>"
 );
 

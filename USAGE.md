@@ -7,20 +7,16 @@ This example demonstrates simple sending SMS message to a single recipient:
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendSmsRequestBody req = SendSmsRequestBody.CreateArrayOfSmsMessage(
-    new List<SmsMessage>() {
-        new SmsMessage() {
-            Recipients = SmsMessageRecipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Message = "To jest treść wiadomości",
-        },
+SendSmsRequestBody req = SendSmsRequestBody.CreateSmsMessage(
+    new SmsMessage() {
+        Recipients = SmsMessageRecipients.CreateStr(
+            "+48999999999"
+        ),
+        Message = "This is SMS message content.",
+        Unicode = true,
     }
 );
 
@@ -37,26 +33,19 @@ This example demonstrates simple sending MMS message to a single recipient:
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
 using Gsmservice.Gateway.Models.Requests;
-using System.Collections.Generic;
 
 var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
 
-SendMmsRequestBody req = SendMmsRequestBody.CreateArrayOfMmsMessage(
-    new List<MmsMessage>() {
-        new MmsMessage() {
-            Recipients = Recipients.CreateArrayOfStr(
-                new List<string>() {
-                    "+48999999999",
-                }
-            ),
-            Subject = "To jest temat wiadomości",
-            Message = "To jest treść wiadomości",
-            Attachments = Attachments.CreateArrayOfStr(
-                new List<string>() {
-                    "<file_body in base64 format>",
-                }
-            ),
-        },
+SendMmsRequestBody req = SendMmsRequestBody.CreateMmsMessage(
+    new MmsMessage() {
+        Recipients = Recipients.CreateStr(
+            "+48999999999"
+        ),
+        Subject = "This is a subject of the message",
+        Message = "This is MMS message content.",
+        Attachments = Attachments.CreateStr(
+            "<file body in base64 format>"
+        ),
     }
 );
 

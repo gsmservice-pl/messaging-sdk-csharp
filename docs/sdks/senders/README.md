@@ -19,6 +19,7 @@ As a successful result a `ListSendersResponse` object will be returned wich `Sen
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="listSenders" method="get" path="/senders" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -50,6 +51,7 @@ As a successful result a `AddSenderResponse` object will be returned with a `Sen
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="addSender" method="post" path="/senders" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -92,6 +94,7 @@ As a successful response there would be no Exception thrown.
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="deleteSender" method="delete" path="/senders/{sender}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;
@@ -129,6 +132,7 @@ As a successful response no Exception will be thrown.
 
 ### Example Usage
 
+<!-- UsageSnippet language="csharp" operationID="setDefaultSender" method="patch" path="/senders/{sender}" -->
 ```csharp
 using Gsmservice.Gateway;
 using Gsmservice.Gateway.Models.Components;

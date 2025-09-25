@@ -17,21 +17,21 @@ namespace Gsmservice.Gateway.Models.Components
     using System.Collections.Generic;
     using System.Numerics;
     using System.Reflection;
-    
 
     public class RecipientsType
     {
         private RecipientsType(string value) { Value = value; }
 
         public string Value { get; private set; }
+
         public static RecipientsType Str { get { return new RecipientsType("str"); } }
-        
+
         public static RecipientsType ArrayOfStr { get { return new RecipientsType("arrayOfStr"); } }
-        
+
         public static RecipientsType PhoneNumberWithCid { get { return new RecipientsType("PhoneNumberWithCid"); } }
-        
+
         public static RecipientsType ArrayOfPhoneNumberWithCid { get { return new RecipientsType("arrayOfPhoneNumberWithCid"); } }
-        
+
         public static RecipientsType Null { get { return new RecipientsType("null"); } }
 
         public override string ToString() { return Value; }
@@ -66,8 +66,10 @@ namespace Gsmservice.Gateway.Models.Components
     /// The recipient number or multiple recipients numbers of single message. To set one recipient, please use `Recipients.CreateStr()` method simply passing to it a `string` with his phone number. To set multiple recipients, please use `Recipients.CreateArrayOfStr()` method passing to it `List&lt;string&gt;`. Optionally you can also set custom id (user identifier) for each message - use `Recipients.CreatePhoneNumberWithCid()` method passing `PhoneNumberWithCid` object (in case of single recipient) or `Recipients.CreateArrayOfPhoneNumberWithCid()` method passing List&lt;PhoneNumberWithCid&gt; (in case of multiple recipients).
     /// </summary>
     [JsonConverter(typeof(Recipients.RecipientsConverter))]
-    public class Recipients {
-        public Recipients(RecipientsType type) {
+    public class Recipients
+    {
+        public Recipients(RecipientsType type)
+        {
             Type = type;
         }
 
@@ -84,33 +86,32 @@ namespace Gsmservice.Gateway.Models.Components
         public List<PhoneNumberWithCid>? ArrayOfPhoneNumberWithCid { get; set; }
 
         public RecipientsType Type { get; set; }
-
-
-        public static Recipients CreateStr(string str) {
+        public static Recipients CreateStr(string str)
+        {
             RecipientsType typ = RecipientsType.Str;
 
             Recipients res = new Recipients(typ);
             res.Str = str;
             return res;
         }
-
-        public static Recipients CreateArrayOfStr(List<string> arrayOfStr) {
+        public static Recipients CreateArrayOfStr(List<string> arrayOfStr)
+        {
             RecipientsType typ = RecipientsType.ArrayOfStr;
 
             Recipients res = new Recipients(typ);
             res.ArrayOfStr = arrayOfStr;
             return res;
         }
-
-        public static Recipients CreatePhoneNumberWithCid(PhoneNumberWithCid phoneNumberWithCid) {
+        public static Recipients CreatePhoneNumberWithCid(PhoneNumberWithCid phoneNumberWithCid)
+        {
             RecipientsType typ = RecipientsType.PhoneNumberWithCid;
 
             Recipients res = new Recipients(typ);
             res.PhoneNumberWithCid = phoneNumberWithCid;
             return res;
         }
-
-        public static Recipients CreateArrayOfPhoneNumberWithCid(List<PhoneNumberWithCid> arrayOfPhoneNumberWithCid) {
+        public static Recipients CreateArrayOfPhoneNumberWithCid(List<PhoneNumberWithCid> arrayOfPhoneNumberWithCid)
+        {
             RecipientsType typ = RecipientsType.ArrayOfPhoneNumberWithCid;
 
             Recipients res = new Recipients(typ);
@@ -118,7 +119,8 @@ namespace Gsmservice.Gateway.Models.Components
             return res;
         }
 
-        public static Recipients CreateNull() {
+        public static Recipients CreateNull()
+        {
             RecipientsType typ = RecipientsType.Null;
             return new Recipients(typ);
         }
@@ -236,33 +238,37 @@ namespace Gsmservice.Gateway.Models.Components
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 Recipients res = (Recipients)value;
                 if (RecipientsType.FromString(res.Type).Equals(RecipientsType.Null))
                 {
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 if (res.Str != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.Str));
                     return;
                 }
+
                 if (res.ArrayOfStr != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfStr));
                     return;
                 }
+
                 if (res.PhoneNumberWithCid != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.PhoneNumberWithCid));
                     return;
                 }
+
                 if (res.ArrayOfPhoneNumberWithCid != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfPhoneNumberWithCid));
                     return;
                 }
-
             }
 
         }

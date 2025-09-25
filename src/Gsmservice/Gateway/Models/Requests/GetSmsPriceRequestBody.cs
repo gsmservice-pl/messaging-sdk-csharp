@@ -17,17 +17,17 @@ namespace Gsmservice.Gateway.Models.Requests
     using System.Collections.Generic;
     using System.Numerics;
     using System.Reflection;
-    
 
     public class GetSmsPriceRequestBodyType
     {
         private GetSmsPriceRequestBodyType(string value) { Value = value; }
 
         public string Value { get; private set; }
+
         public static GetSmsPriceRequestBodyType SmsMessage { get { return new GetSmsPriceRequestBodyType("SmsMessage"); } }
-        
+
         public static GetSmsPriceRequestBodyType ArrayOfSmsMessage { get { return new GetSmsPriceRequestBodyType("arrayOfSmsMessage"); } }
-        
+
         public static GetSmsPriceRequestBodyType Null { get { return new GetSmsPriceRequestBodyType("null"); } }
 
         public override string ToString() { return Value; }
@@ -60,8 +60,10 @@ namespace Gsmservice.Gateway.Models.Requests
     /// To check the price of a single message or messages with the same content to multiple recipients, pass a single `SmsMessage` object with the properties of this message using `SendSmsRequestBody.CreateSmsMessage()` method. To check the price of multiple messages with different content at the same time, pass a `List&lt;SmsMessage&gt;` with the properties of each message using `SendSmsRequestBody.CreateArrayOfSmsMessage()` method.
     /// </summary>
     [JsonConverter(typeof(GetSmsPriceRequestBody.GetSmsPriceRequestBodyConverter))]
-    public class GetSmsPriceRequestBody {
-        public GetSmsPriceRequestBody(GetSmsPriceRequestBodyType type) {
+    public class GetSmsPriceRequestBody
+    {
+        public GetSmsPriceRequestBody(GetSmsPriceRequestBodyType type)
+        {
             Type = type;
         }
 
@@ -72,17 +74,16 @@ namespace Gsmservice.Gateway.Models.Requests
         public List<SmsMessage>? ArrayOfSmsMessage { get; set; }
 
         public GetSmsPriceRequestBodyType Type { get; set; }
-
-
-        public static GetSmsPriceRequestBody CreateSmsMessage(SmsMessage smsMessage) {
+        public static GetSmsPriceRequestBody CreateSmsMessage(SmsMessage smsMessage)
+        {
             GetSmsPriceRequestBodyType typ = GetSmsPriceRequestBodyType.SmsMessage;
 
             GetSmsPriceRequestBody res = new GetSmsPriceRequestBody(typ);
             res.SmsMessage = smsMessage;
             return res;
         }
-
-        public static GetSmsPriceRequestBody CreateArrayOfSmsMessage(List<SmsMessage> arrayOfSmsMessage) {
+        public static GetSmsPriceRequestBody CreateArrayOfSmsMessage(List<SmsMessage> arrayOfSmsMessage)
+        {
             GetSmsPriceRequestBodyType typ = GetSmsPriceRequestBodyType.ArrayOfSmsMessage;
 
             GetSmsPriceRequestBody res = new GetSmsPriceRequestBody(typ);
@@ -90,7 +91,8 @@ namespace Gsmservice.Gateway.Models.Requests
             return res;
         }
 
-        public static GetSmsPriceRequestBody CreateNull() {
+        public static GetSmsPriceRequestBody CreateNull()
+        {
             GetSmsPriceRequestBodyType typ = GetSmsPriceRequestBodyType.Null;
             return new GetSmsPriceRequestBody(typ);
         }
@@ -181,23 +183,25 @@ namespace Gsmservice.Gateway.Models.Requests
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 GetSmsPriceRequestBody res = (GetSmsPriceRequestBody)value;
                 if (GetSmsPriceRequestBodyType.FromString(res.Type).Equals(GetSmsPriceRequestBodyType.Null))
                 {
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 if (res.SmsMessage != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.SmsMessage));
                     return;
                 }
+
                 if (res.ArrayOfSmsMessage != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfSmsMessage));
                     return;
                 }
-
             }
 
         }

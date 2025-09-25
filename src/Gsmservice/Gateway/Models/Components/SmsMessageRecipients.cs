@@ -17,21 +17,21 @@ namespace Gsmservice.Gateway.Models.Components
     using System.Collections.Generic;
     using System.Numerics;
     using System.Reflection;
-    
 
     public class SmsMessageRecipientsType
     {
         private SmsMessageRecipientsType(string value) { Value = value; }
 
         public string Value { get; private set; }
+
         public static SmsMessageRecipientsType Str { get { return new SmsMessageRecipientsType("str"); } }
-        
+
         public static SmsMessageRecipientsType ArrayOfStr { get { return new SmsMessageRecipientsType("arrayOfStr"); } }
-        
+
         public static SmsMessageRecipientsType PhoneNumberWithCid { get { return new SmsMessageRecipientsType("PhoneNumberWithCid"); } }
-        
+
         public static SmsMessageRecipientsType ArrayOfPhoneNumberWithCid { get { return new SmsMessageRecipientsType("arrayOfPhoneNumberWithCid"); } }
-        
+
         public static SmsMessageRecipientsType Null { get { return new SmsMessageRecipientsType("null"); } }
 
         public override string ToString() { return Value; }
@@ -66,8 +66,10 @@ namespace Gsmservice.Gateway.Models.Components
     /// The recipient number or multiple recipients numbers of single message. To set one recipient, please use `SmsMessageRecipients.CreateStr()` method simply passing to it a `string` with his phone number. To set multiple recipients, please use `SmsMessageRecipients.CreateArrayOfStr()` method passing to it `List&lt;string&gt;`. Optionally you can also set custom id (user identifier) for each message - use `SmsMessageRecipients.CreatePhoneNumberWithCid()` method passing `PhoneNumberWithCid` object (in case of single recipient) or `SmsMessageRecipients.CreateArrayOfPhoneNumberWithCid()` method passing List&lt;PhoneNumberWithCid&gt; (in case of multiple recipients).
     /// </summary>
     [JsonConverter(typeof(SmsMessageRecipients.SmsMessageRecipientsConverter))]
-    public class SmsMessageRecipients {
-        public SmsMessageRecipients(SmsMessageRecipientsType type) {
+    public class SmsMessageRecipients
+    {
+        public SmsMessageRecipients(SmsMessageRecipientsType type)
+        {
             Type = type;
         }
 
@@ -84,33 +86,32 @@ namespace Gsmservice.Gateway.Models.Components
         public List<PhoneNumberWithCid>? ArrayOfPhoneNumberWithCid { get; set; }
 
         public SmsMessageRecipientsType Type { get; set; }
-
-
-        public static SmsMessageRecipients CreateStr(string str) {
+        public static SmsMessageRecipients CreateStr(string str)
+        {
             SmsMessageRecipientsType typ = SmsMessageRecipientsType.Str;
 
             SmsMessageRecipients res = new SmsMessageRecipients(typ);
             res.Str = str;
             return res;
         }
-
-        public static SmsMessageRecipients CreateArrayOfStr(List<string> arrayOfStr) {
+        public static SmsMessageRecipients CreateArrayOfStr(List<string> arrayOfStr)
+        {
             SmsMessageRecipientsType typ = SmsMessageRecipientsType.ArrayOfStr;
 
             SmsMessageRecipients res = new SmsMessageRecipients(typ);
             res.ArrayOfStr = arrayOfStr;
             return res;
         }
-
-        public static SmsMessageRecipients CreatePhoneNumberWithCid(PhoneNumberWithCid phoneNumberWithCid) {
+        public static SmsMessageRecipients CreatePhoneNumberWithCid(PhoneNumberWithCid phoneNumberWithCid)
+        {
             SmsMessageRecipientsType typ = SmsMessageRecipientsType.PhoneNumberWithCid;
 
             SmsMessageRecipients res = new SmsMessageRecipients(typ);
             res.PhoneNumberWithCid = phoneNumberWithCid;
             return res;
         }
-
-        public static SmsMessageRecipients CreateArrayOfPhoneNumberWithCid(List<PhoneNumberWithCid> arrayOfPhoneNumberWithCid) {
+        public static SmsMessageRecipients CreateArrayOfPhoneNumberWithCid(List<PhoneNumberWithCid> arrayOfPhoneNumberWithCid)
+        {
             SmsMessageRecipientsType typ = SmsMessageRecipientsType.ArrayOfPhoneNumberWithCid;
 
             SmsMessageRecipients res = new SmsMessageRecipients(typ);
@@ -118,7 +119,8 @@ namespace Gsmservice.Gateway.Models.Components
             return res;
         }
 
-        public static SmsMessageRecipients CreateNull() {
+        public static SmsMessageRecipients CreateNull()
+        {
             SmsMessageRecipientsType typ = SmsMessageRecipientsType.Null;
             return new SmsMessageRecipients(typ);
         }
@@ -236,33 +238,37 @@ namespace Gsmservice.Gateway.Models.Components
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 SmsMessageRecipients res = (SmsMessageRecipients)value;
                 if (SmsMessageRecipientsType.FromString(res.Type).Equals(SmsMessageRecipientsType.Null))
                 {
                     writer.WriteRawValue("null");
                     return;
                 }
+
                 if (res.Str != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.Str));
                     return;
                 }
+
                 if (res.ArrayOfStr != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfStr));
                     return;
                 }
+
                 if (res.PhoneNumberWithCid != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.PhoneNumberWithCid));
                     return;
                 }
+
                 if (res.ArrayOfPhoneNumberWithCid != null)
                 {
                     writer.WriteRawValue(Utilities.SerializeJSON(res.ArrayOfPhoneNumberWithCid));
                     return;
                 }
-
             }
 
         }

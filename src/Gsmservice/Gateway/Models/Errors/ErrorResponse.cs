@@ -12,13 +12,10 @@ namespace Gsmservice.Gateway.Models.Errors
     using Gsmservice.Gateway.Utils;
     using Newtonsoft.Json;
     using System;
-    
-    /// <summary>
-    /// An object that complies with RFC 9457 containing information about a request error
-    /// </summary>
-    public class ErrorResponse : Exception
-    {
+    using System.Net.Http;
 
+    public class ErrorResponsePayload
+    {
         /// <summary>
         /// A URI reference that identifies the problem type
         /// </summary>
@@ -55,4 +52,64 @@ namespace Gsmservice.Gateway.Models.Errors
         [JsonProperty("instance")]
         public string? Instance { get; set; }
     }
+
+    /// <summary>
+    /// An object that complies with RFC 9457 containing information about a request error
+    /// </summary>
+    public class ErrorResponse : ClientException
+    {
+        /// <summary>
+        ///  The original data that was passed to this exception.
+        /// </summary>
+        public ErrorResponsePayload Payload { get; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Type instead.")]
+        public string? Type { get; set; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Status instead.")]
+        public long? Status { get; set; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Title instead.")]
+        public string? Title { get; set; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Detail instead.")]
+        public string? Detail { get; set; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Code instead.")]
+        public string? Code { get; set; }
+
+        [Obsolete("This field will be removed in a future release, please migrate away from it as soon as possible. Use ErrorResponse.Payload.Instance instead.")]
+        public string? Instance { get; set; }
+
+        private static string ErrorMessage(ErrorResponsePayload payload, string body)
+        {
+            string? message = payload.Detail;
+            if (!string.IsNullOrEmpty(message))
+            {
+                return message;
+            }
+
+            return "API error occurred";
+        }
+
+        public ErrorResponse(
+            ErrorResponsePayload payload,
+            HttpRequestMessage request,
+            HttpResponseMessage response,
+            string body
+        ): base(ErrorMessage(payload, body), request, response, body)
+        {
+           Payload = payload;
+
+           #pragma warning disable CS0618
+           Type = payload.Type;
+           Status = payload.Status;
+           Title = payload.Title;
+           Detail = payload.Detail;
+           Code = payload.Code;
+           Instance = payload.Instance;
+           #pragma warning restore CS0618
+        }
+    }
+
 }

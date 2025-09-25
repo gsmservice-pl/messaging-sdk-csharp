@@ -3,7 +3,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Gsmservice.Gateway</PackageId>
-    <Version>3.0.1</Version>
+    <Version>4.0.1</Version>
     <TargetFramework>net8.0</TargetFramework>
     <Authors>SzybkiSMS.pl</Authors>
     <Copyright>Copyright (c) SzybkiSMS.pl 2025</Copyright>
