@@ -1,5 +1,4 @@
 # Incoming
-(*Incoming*)
 
 ## Overview
 
@@ -7,6 +6,7 @@
 
 * [List](#list) - List the received SMS messages
 * [GetByIds](#getbyids) - Get the incoming messages by IDs
+* [RemoveByIds](#removebyids) - Remove the incoming messages from your inbox
 
 ## List
 
@@ -89,4 +89,50 @@ var res = await sdk.Incoming.GetByIdsAsync(ids: new List<long>() {
 | Error Type                                     | Status Code                                    | Content Type                                   |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
 | Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 404, 4XX                             | application/problem+json                       |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |
+
+## RemoveByIds
+
+Remove incoming messages from your inbox using their `ids`. You have to pass the unique incoming message IDs as path parameter. If you want to remove multiple incoming messages at once, please separate their IDs with a comma. The system will accept maximum 50 identifiers in one call. If you need to remove larger volume of incoming messages, please split it to several separate requests.
+ 
+As a successful result an array with `RemovedIncomingMessage` objects will be returned, each object per single incoming message id. The `status` property will contain a status code of operation - `204` if incoming message was removed successfully and other code if an error occured with removing a given incoming message. In case of an error, an `error` property will contain `ErrorResponse` object with the details of an error.
+ 
+Response will also include meta-data headers: `X-Success-Count` (a count of incoming messages which were removed successfully), `X-Error-Count` (count of incoming messages which were not removed) and `X-Sandbox` (if a request was made in Sandbox or Production system).
+ 
+If you pass duplicated incoming message IDs in one call, API will process them only once. This request have to be authenticated using **API Access Token**.
+
+In case of an error, the `ErrorResponse` object will be returned with proper HTTP header status code (our error response complies with [RFC 9457](https://www.rfc-editor.org/rfc/rfc7807)).
+
+### Example Usage
+
+<!-- UsageSnippet language="csharp" operationID="removeIncomingMessages" method="delete" path="/incoming/{ids}" -->
+```csharp
+using Gsmservice.Gateway;
+using Gsmservice.Gateway.Models.Components;
+using System.Collections.Generic;
+
+var sdk = new Client(bearer: "<YOUR API ACCESS TOKEN>");
+
+var res = await sdk.Incoming.RemoveByIdsAsync(ids: new List<long>() {
+    43456,
+});
+
+// handle response
+```
+
+### Parameters
+
+| Parameter                                                                                                    | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `Ids`                                                                                                        | List<*long*>                                                                                                 | :heavy_check_mark:                                                                                           | Array of Message IDs assigned by the system. The system will accept a maximum of 50 identifiers in one call. |
+
+### Response
+
+**[RemoveIncomingMessagesResponse](../../Models/Requests/RemoveIncomingMessagesResponse.md)**
+
+### Errors
+
+| Error Type                                     | Status Code                                    | Content Type                                   |
+| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Gsmservice.Gateway.Models.Errors.ErrorResponse | 400, 401, 403, 404, 4XX                        | application/problem+json                       |
 | Gsmservice.Gateway.Models.Errors.ErrorResponse | 5XX                                            | application/problem+json                       |

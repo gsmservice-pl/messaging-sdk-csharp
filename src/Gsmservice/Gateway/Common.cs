@@ -40,10 +40,11 @@ namespace Gsmservice.Gateway
     public class Common: ICommon
     {
         public SDKConfig SDKConfiguration { get; private set; }
-        private const string _language = "csharp";
-        private const string _sdkVersion = "4.0.1";
-        private const string _sdkGenVersion = "2.716.5";
-        private const string _openapiDocVersion = "1.2.2";
+
+        private const string _language = Constants.Language;
+        private const string _sdkVersion = Constants.SdkVersion;
+        private const string _sdkGenVersion = Constants.SdkGenVersion;
+        private const string _openapiDocVersion = Constants.OpenApiDocVersion;
 
         public Common(SDKConfig config)
         {
@@ -59,7 +60,7 @@ namespace Gsmservice.Gateway
             var httpRequest = new HttpRequestMessage(HttpMethod.Get, urlString);
             httpRequest.Headers.Add("user-agent", SDKConfiguration.UserAgent);
 
-            var hookCtx = new HookContext(SDKConfiguration, baseUrl, "ping", new List<string> {  }, null);
+            var hookCtx = new HookContext(SDKConfiguration, baseUrl, "ping", null, null);
 
             httpRequest = await this.SDKConfiguration.Hooks.BeforeRequestAsync(new BeforeRequestContext(hookCtx), httpRequest);
             if (retryConfig == null)

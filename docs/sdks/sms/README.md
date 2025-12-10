@@ -1,5 +1,4 @@
-# Sms
-(*Outgoing.Sms*)
+# Outgoing.Sms
 
 ## Overview
 

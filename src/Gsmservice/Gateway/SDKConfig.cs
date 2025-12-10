@@ -52,7 +52,7 @@ namespace Gsmservice.Gateway
             Client = client ?? new SpeakeasyHttpClient();
             ServerUrl = "";
             ServerName = null;
-            UserAgent = "speakeasy-sdk/csharp 4.0.1 2.716.5 1.2.2 Gsmservice.Gateway";
+            UserAgent = "speakeasy-sdk/csharp 5.1.3 2.779.0 1.2.3 Gsmservice.Gateway";
             SecuritySource = null;
             Hooks = new SDKHooks();
             RetryConfig = null;

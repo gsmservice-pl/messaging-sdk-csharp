@@ -28,15 +28,12 @@ namespace Gsmservice.Gateway.Models.Requests
 
         public static GetSmsPriceRequestBodyType ArrayOfSmsMessage { get { return new GetSmsPriceRequestBodyType("arrayOfSmsMessage"); } }
 
-        public static GetSmsPriceRequestBodyType Null { get { return new GetSmsPriceRequestBodyType("null"); } }
-
         public override string ToString() { return Value; }
         public static implicit operator String(GetSmsPriceRequestBodyType v) { return v.Value; }
         public static GetSmsPriceRequestBodyType FromString(string v) {
             switch(v) {
                 case "SmsMessage": return SmsMessage;
                 case "arrayOfSmsMessage": return ArrayOfSmsMessage;
-                case "null": return Null;
                 default: throw new ArgumentException("Invalid value for GetSmsPriceRequestBodyType");
             }
         }
@@ -91,27 +88,20 @@ namespace Gsmservice.Gateway.Models.Requests
             return res;
         }
 
-        public static GetSmsPriceRequestBody CreateNull()
-        {
-            GetSmsPriceRequestBodyType typ = GetSmsPriceRequestBodyType.Null;
-            return new GetSmsPriceRequestBody(typ);
-        }
-
         public class GetSmsPriceRequestBodyConverter : JsonConverter
         {
-
             public override bool CanConvert(System.Type objectType) => objectType == typeof(GetSmsPriceRequestBody);
 
             public override bool CanRead => true;
 
             public override object? ReadJson(JsonReader reader, System.Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                var json = JRaw.Create(reader).ToString();
-                if (json == "null")
+                if (reader.TokenType == JsonToken.Null)
                 {
-                    return null;
+                    throw new InvalidOperationException("Received unexpected null JSON value");
                 }
 
+                var json = JRaw.Create(reader).ToString();
                 var fallbackCandidates = new List<(System.Type, object, string)>();
 
                 try
@@ -179,17 +169,12 @@ namespace Gsmservice.Gateway.Models.Requests
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
             {
-                if (value == null) {
-                    writer.WriteRawValue("null");
-                    return;
+                if (value == null)
+                {
+                    throw new InvalidOperationException("Unexpected null JSON value.");
                 }
 
                 GetSmsPriceRequestBody res = (GetSmsPriceRequestBody)value;
-                if (GetSmsPriceRequestBodyType.FromString(res.Type).Equals(GetSmsPriceRequestBodyType.Null))
-                {
-                    writer.WriteRawValue("null");
-                    return;
-                }
 
                 if (res.SmsMessage != null)
                 {

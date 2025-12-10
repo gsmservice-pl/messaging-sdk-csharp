@@ -1,0 +1,10 @@
+# RemoveIncomingMessagesResponse
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `HttpMeta`                                                                                             | [HTTPMetadata](../../Models/Components/HTTPMetadata.md)                                                | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `RemovedIncomingMessages`                                                                              | List<[RemovedIncomingMessage](../../Models/Components/RemovedIncomingMessage.md)>                      | :heavy_minus_sign:                                                                                     | The request was processed successfully. Please check the status of incoming messages in response body. |
+| `Headers`                                                                                              | Dictionary<String, List<*string*>>                                                                     | :heavy_check_mark:                                                                                     | N/A                                                                                                    |

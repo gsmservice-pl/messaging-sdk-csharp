@@ -1,5 +1,4 @@
-# Mms
-(*Outgoing.Mms*)
+# Outgoing.Mms
 
 ## Overview
 

@@ -32,8 +32,6 @@ namespace Gsmservice.Gateway.Models.Components
 
         public static SmsMessageRecipientsType ArrayOfPhoneNumberWithCid { get { return new SmsMessageRecipientsType("arrayOfPhoneNumberWithCid"); } }
 
-        public static SmsMessageRecipientsType Null { get { return new SmsMessageRecipientsType("null"); } }
-
         public override string ToString() { return Value; }
         public static implicit operator String(SmsMessageRecipientsType v) { return v.Value; }
         public static SmsMessageRecipientsType FromString(string v) {
@@ -42,7 +40,6 @@ namespace Gsmservice.Gateway.Models.Components
                 case "arrayOfStr": return ArrayOfStr;
                 case "PhoneNumberWithCid": return PhoneNumberWithCid;
                 case "arrayOfPhoneNumberWithCid": return ArrayOfPhoneNumberWithCid;
-                case "null": return Null;
                 default: throw new ArgumentException("Invalid value for SmsMessageRecipientsType");
             }
         }
@@ -119,27 +116,20 @@ namespace Gsmservice.Gateway.Models.Components
             return res;
         }
 
-        public static SmsMessageRecipients CreateNull()
-        {
-            SmsMessageRecipientsType typ = SmsMessageRecipientsType.Null;
-            return new SmsMessageRecipients(typ);
-        }
-
         public class SmsMessageRecipientsConverter : JsonConverter
         {
-
             public override bool CanConvert(System.Type objectType) => objectType == typeof(SmsMessageRecipients);
 
             public override bool CanRead => true;
 
             public override object? ReadJson(JsonReader reader, System.Type objectType, object? existingValue, JsonSerializer serializer)
             {
-                var json = JRaw.Create(reader).ToString();
-                if (json == "null")
+                if (reader.TokenType == JsonToken.Null)
                 {
-                    return null;
+                    throw new InvalidOperationException("Received unexpected null JSON value");
                 }
 
+                var json = JRaw.Create(reader).ToString();
                 var fallbackCandidates = new List<(System.Type, object, string)>();
 
                 try
@@ -234,17 +224,12 @@ namespace Gsmservice.Gateway.Models.Components
 
             public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
             {
-                if (value == null) {
-                    writer.WriteRawValue("null");
-                    return;
+                if (value == null)
+                {
+                    throw new InvalidOperationException("Unexpected null JSON value.");
                 }
 
                 SmsMessageRecipients res = (SmsMessageRecipients)value;
-                if (SmsMessageRecipientsType.FromString(res.Type).Equals(SmsMessageRecipientsType.Null))
-                {
-                    writer.WriteRawValue("null");
-                    return;
-                }
 
                 if (res.Str != null)
                 {
